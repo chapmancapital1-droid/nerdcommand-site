@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NerdCommand.info | AI Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#F5C518;
+  --gold-dark:#D4A017;
+  --gold-dim:#8a6d0a;
+  --black:#0a0a0a;
+  --surface:#111111;
+  --surface2:#1a1a1a;
+  --surface3:#222222;
+  --text:#f0f0f0;
+  --text-muted:#888;
+  --border:#2a2a2a;
+  --white:#ffffff;
+}
+body{background:var(--black);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border);padding:0 2rem;}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-badge{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#000;letter-spacing:-0.5px;}
+.logo-text{font-weight:700;font-size:16px;color:var(--white);}
+.logo-text span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:#000;padding:8px 20px;border-radius:6px;font-weight:700;font-size:14px;text-decoration:none;transition:background 0.2s;}
+.nav-cta:hover{background:var(--gold-dark);}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 2rem 4rem;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 800px 600px at 50% 40%, rgba(245,197,24,0.06) 0%, transparent 70%);}
+.hero-inner{position:relative;max-width:900px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:0.5px;margin-bottom:2rem;text-transform:uppercase;}
+.hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem;}
+.hero h1 span{color:var(--gold);}
+.hero-sub{font-size:1.2rem;color:var(--text-muted);max-width:600px;margin:0 auto 2.5rem;}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--gold);color:#000;padding:14px 32px;border-radius:8px;font-weight:700;font-size:16px;text-decoration:none;transition:all 0.2s;display:inline-block;}
+.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px);}
+.btn-secondary{background:transparent;color:var(--white);padding:14px 32px;border-radius:8px;font-weight:600;font-size:16px;text-decoration:none;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-num{font-size:2rem;font-weight:900;color:var(--gold);}
+.stat-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+
+/* SECTION BASE */
+section{padding:6rem 2rem;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{display:inline-block;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.2);border-radius:100px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;}
+.section-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-1px;margin-bottom:1rem;}
+.section-title span{color:var(--gold);}
+.section-sub{font-size:1.05rem;color:var(--text-muted);max-width:560px;}
+
+/* DIVISIONS */
+.divisions{background:var(--surface);}
+.divisions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3.5rem;}
+.division-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.2s;cursor:pointer;text-decoration:none;display:block;color:inherit;}
+.division-card:hover{border-color:var(--gold);transform:translateY(-4px);}
+.division-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);opacity:0;transition:opacity 0.3s;}
+.division-card:hover::before{opacity:1;}
+.division-icon{width:52px;height:52px;border-radius:12px;background:rgba(245,197,24,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:24px;}
+.division-tag{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;}
+.division-name{font-size:1.25rem;font-weight:700;margin-bottom:0.75rem;color:var(--white);}
+.division-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.6;}
+.division-link{display:flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:13px;font-weight:600;color:var(--gold);}
+
+/* COMMAND AGENT */
+.agent-section{background:var(--black);}
+.agent-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3.5rem;}
+.agent-features{display:flex;flex-direction:column;gap:1.25rem;}
+.agent-feature{display:flex;gap:1rem;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
+.agent-feature-icon{width:40px;height:40px;border-radius:10px;background:rgba(245,197,24,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.agent-feature-text h4{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.agent-feature-text p{font-size:13px;color:var(--text-muted);}
+.agent-visual{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;font-family:'Inter',monospace;}
+.agent-visual-header{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
+.agent-dot{width:10px;height:10px;border-radius:50%;}
+.agent-dot.green{background:#22c55e;}
+.agent-dot.amber{background:var(--gold);}
+.agent-visual-title{font-size:13px;font-weight:600;color:var(--text-muted);}
+.brief-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;font-size:13px;}
+.brief-label{color:var(--gold);font-weight:600;min-width:90px;font-size:12px;text-transform:uppercase;}
+.brief-val{color:var(--text-muted);}
+.brief-val strong{color:var(--text);}
+
+/* PRICING */
+.pricing-section{background:var(--surface);}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3.5rem;}
+.pricing-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;}
+.pricing-card.featured{border-color:var(--gold);background:var(--surface3);}
+.featured-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;font-size:12px;font-weight:700;padding:4px 16px;border-radius:100px;white-space:nowrap;}
+.price-name{font-size:14px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;}
+.price-amount{font-size:2.5rem;font-weight:900;color:var(--white);letter-spacing:-1px;}
+.price-amount span{font-size:1rem;font-weight:400;color:var(--text-muted);}
+.price-setup{font-size:13px;color:var(--gold);margin-top:4px;}
+.price-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.price-features li{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--text-muted);}
+.price-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;}
+.price-btn{display:block;text-align:center;margin-top:1.75rem;padding:12px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all 0.2s;}
+.price-btn.outline{border:1px solid var(--border);color:var(--white);}
+.price-btn.outline:hover{border-color:var(--gold);color:var(--gold);}
+.price-btn.solid{background:var(--gold);color:#000;}
+.price-btn.solid:hover{background:var(--gold-dark);}
+
+/* TRADING */
+.trading-section{background:var(--black);}
+.trading-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3.5rem;}
+.strategy-cards{display:flex;flex-direction:column;gap:1rem;}
+.strategy-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;border-left:3px solid var(--gold);}
+.strategy-card h4{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
+.strategy-card p{font-size:13px;color:var(--text-muted);}
+.strategy-target{display:inline-block;background:rgba(245,197,24,0.1);color:var(--gold);font-size:12px;font-weight:600;padding:2px 10px;border-radius:4px;margin-top:8px;}
+
+/* CTA SECTION */
+.cta-section{background:var(--surface);text-align:center;}
+.cta-box{background:linear-gradient(135deg,rgba(245,197,24,0.08),rgba(245,197,24,0.02));border:1px solid rgba(245,197,24,0.2);border-radius:24px;padding:5rem 3rem;max-width:800px;margin:0 auto;}
+.cta-box h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-1px;margin-bottom:1rem;}
+.cta-box p{font-size:1.1rem;color:var(--text-muted);margin-bottom:2.5rem;}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--border);padding:3rem 2rem;}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;}
+.footer-logo{font-weight:700;color:var(--white);}
+.footer-logo span{color:var(--gold);}
+.footer-copy{font-size:13px;color:var(--text-muted);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{font-size:13px;color:var(--text-muted);text-decoration:none;}
+.footer-links a:hover{color:var(--gold);}
+
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .agent-layout,.trading-layout{grid-template-columns:1fr;}
+  .hero-stats{gap:2rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-badge">NC</div>
+      <div class="logo-text">Nerd<span>Command</span>.info</div>
+    </div>
+    <div class="nav-links">
+      <a href="#divisions">Divisions</a>
+      <a href="#agent">Business Agent</a>
+      <a href="#trading">Trading Brain</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a href="#cta" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">⚡ GangsterNerds LLC</div>
+    <h1>The <span>AI Command Center</span><br>Built Different.</h1>
+    <p class="hero-sub">For creators, it's an AI studio. For businesses, it's an AI command agent. For traders, it's an intelligence engine. One platform. Multiple divisions.</p>
+    <div class="hero-ctas">
+      <a href="#divisions" class="btn-primary">Explore Divisions</a>
+      <a href="#agent" class="btn-secondary">See the Business Agent</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Divisions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$300+</div>
+        <div class="stat-label">Monthly Trading Target</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">36.2M</div>
+        <div class="stat-label">U.S. SMBs We Serve</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0ms</div>
+        <div class="stat-label">Missed Leads</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVISIONS -->
+<section class="divisions" id="divisions">
+  <div class="section-inner">
+    <div class="section-tag">Our Divisions</div>
+    <h2 class="section-title">One Command. <span>Four Missions.</span></h2>
+    <p class="section-sub">NerdCommand operates across four focused divisions — each built to solve a real problem, powered by AI.</p>
+    <div class="divisions-grid">
+
+      <a href="#agent" class="division-card">
+        <div class="division-icon">🤖</div>
+        <div class="division-tag">Division 01</div>
+        <div class="division-name">Business Command Agent</div>
+        <div class="division-desc">Captures every website lead, drafts follow-ups, tracks deals, and sends you a daily business brief. Your business, under AI command.</div>
+        <div class="division-link">Learn more →</div>
+      </a>
+
+      <a href="#studio" class="division-card">
+        <div class="division-icon">🎨</div>
+        <div class="division-tag">Division 02</div>
+        <div class="division-name">AI Studio Suite</div>
+        <div class="division-desc">One workspace for creators, freelancers, and teams. Multi-model AI, projects, files, content calendars, and prompt tools — all in one place.</div>
+        <div class="division-link">Learn more →</div>
+      </a>
+
+      <a href="#trading" class="division-card">
+        <div class="division-icon">📈</div>
+        <div class="division-tag">Division 03</div>
+        <div class="division-name">NCI Trading Brain</div>
+        <div class="division-desc">Algorithmic trading intelligence. EMA/MACD signal engine, Tradier API integration, The Wheel strategy, and real-time risk management.</div>
+        <div class="division-link">Learn more →</div>
+      </a>
+
+      <a href="#managed" class="division-card">
+        <div class="division-icon">⚙️</div>
+        <div class="division-tag">Division 04</div>
+        <div class="division-name">Managed AI Builds</div>
+        <div class="division-desc">Custom AI automation systems for companies that need more. CRM integrations, dashboards, internal agents, and full workflow automation.</div>
+        <div class="division-link">Learn more →</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS AGENT -->
+<section class="agent-section" id="agent">
+  <div class="section-inner">
+    <div class="section-tag">Division 01</div>
+    <h2 class="section-title">Business <span>Command Agent</span></h2>
+    <p class="section-sub">Install an AI agent that captures every lead, drafts every follow-up, tracks every deal, and delivers your daily brief.</p>
+    <div class="agent-layout">
+      <div class="agent-features">
+        <div class="agent-feature">
+          <div class="agent-feature-icon">🎯</div>
+          <div class="agent-feature-text">
+            <h4>Website Lead Capture</h4>
+            <p>Every contact form submission captured, validated, deduplicated, and logged with source attribution — automatically.</p>
+          </div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-icon">✍️</div>
+          <div class="agent-feature-text">
+            <h4>AI Follow-Up Drafts</h4>
+            <p>Personalized follow-up emails drafted within minutes of lead capture. You approve, edit, or reject — then send.</p>
+          </div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-icon">📊</div>
+          <div class="agent-feature-text">
+            <h4>Deal Tracking</h4>
+            <p>Stage, value, probability, and next actions tracked automatically. Stale deals flagged before they die.</p>
+          </div>
+        </div>
+        <div class="agent-feature">
+          <div class="agent-feature-icon">📋</div>
+          <div class="agent-feature-text">
+            <h4>Daily Business Brief</h4>
+            <p>Every morning: leads, deals, alerts, revenue signals, and recommendations — delivered to your inbox or Slack.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-visual">
+        <div class="agent-visual-header">
+          <div class="agent-dot green"></div>
+          <div class="agent-dot amber"></div>
+          <div class="agent-visual-title">📋 NerdCommand Daily Brief — June 6, 2026</div>
+        </div>
+        <div class="brief-item">
+          <span class="brief-label">New Leads</span>
+          <span class="brief-val"><strong>3 captured</strong> — 2 follow-ups drafted &amp; awaiting approval</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-label">Pipeline</span>
+          <span class="brief-val"><strong>$42,500</strong> open value — 1 deal stale &gt;5 days ⚠️</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-label">Website</span>
+          <span class="brief-val"><strong>Uptime 100%</strong> — Contact form healthy ✓</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-label">Action</span>
+          <span class="brief-val">Follow up with <strong>Apex Marketing</strong> — last contact 6 days ago</span>
+        </div>
+        <div class="brief-item">
+          <span class="brief-label">Content</span>
+          <span class="brief-val">2 LinkedIn drafts ready — <strong>tap to approve</strong></span>
+        </div>
+        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #222;display:flex;gap:10px;">
+          <div style="flex:1;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.25);border-radius:8px;padding:10px;text-align:center;font-size:13px;font-weight:700;color:#F5C518;cursor:pointer;">✓ Approve Drafts</div>
+          <div style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px;text-align:center;font-size:13px;font-weight:600;color:#888;cursor:pointer;">View Pipeline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADING BRAIN -->
+<section class="trading-section" id="trading">
+  <div class="section-inner">
+    <div class="section-tag">Division 03</div>
+    <h2 class="section-title">NCI <span>Trading Brain</span></h2>
+    <p class="section-sub">Algorithmic trading intelligence built on a four-layer architecture. Signal generation, risk management, and live execution — all modular.</p>
+    <div class="trading-layout">
+      <div class="strategy-cards">
+        <div class="strategy-card">
+          <h4>The Wheel Strategy</h4>
+          <p>Sell Cash-Secured Puts at 0.25 delta (30 DTE). If assigned, sell Covered Calls at 0.30 delta. Roll before expiration.</p>
+          <span class="strategy-target">Target: $200–$400/month per $10k</span>
+        </div>
+        <div class="strategy-card">
+          <h4>High-Yield Income ETFs</h4>
+          <p>YMAX weekly distributions with DRIP enabled. DGRO for lower yield + NAV appreciation in accumulation phase.</p>
+          <span class="strategy-target">Target: Passive income compounding</span>
+        </div>
+        <div class="strategy-card">
+          <h4>Impulse Signal Engine</h4>
+          <p>EMA-13/26 crossover + MACD histogram confirmation. BUY when EMA rising + histogram positive. Full paper-trading validation.</p>
+          <span class="strategy-target">Built on: Tradier API + Python</span>
+        </div>
+        <div class="strategy-card">
+          <h4>Carry Trade Macro Overlay</h4>
+          <p>JPY/USD monitoring for yen unwinding signals. Rising yen = broad market selloff risk overlay on SPY options positions.</p>
+          <span class="strategy-target">Risk Gate: Non-negotiable</span>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;">
+          <div style="font-size:12px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">System Architecture</div>
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--white);">Data Layer</div>
+                <div style="font-size:12px;color:var(--text-muted);">Tradier API • TradingView • Real-time feeds</div>
+              </div>
+            </div>
+            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--white);">Analysis Layer</div>
+                <div style="font-size:12px;color:var(--text-muted);">EMA • MACD • ML Models • Filters</div>
+              </div>
+            </div>
+            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--white);">Execution Layer</div>
+                <div style="font-size:12px;color:var(--text-muted);">Order Router • Position Tracker • Risk Gates</div>
+              </div>
+            </div>
+            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#a855f7;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:14px;font-weight:700;color:var(--white);">Monitoring Layer</div>
+                <div style="font-size:12px;color:var(--text-muted);">Dashboard • P&L Tracker • Alerts • Logs</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Build Progress</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Tradier API</span><span style="color:var(--gold);">60%</span></div>
+                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:60%;height:100%;background:var(--gold);border-radius:4px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Data Pipeline</span><span style="color:var(--gold);">40%</span></div>
+                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:40%;height:100%;background:var(--gold);border-radius:4px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Signal Engine</span><span style="color:var(--text-muted);">Planned</span></div>
+                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:5%;height:100%;background:#333;border-radius:4px;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-inner">
+    <div class="section-tag">Pricing</div>
+    <h2 class="section-title">Command Your <span>Budget.</span></h2>
+    <p class="section-sub">From self-serve creators to fully-managed business agents. Pick the plan that fits your mission.</p>
+    <div class="pricing-grid" style="margin-top:3.5rem;">
+
+      <div class="pricing-card">
+        <div class="price-name">Creator</div>
+        <div class="price-amount">$19<span>.97/mo</span></div>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li>Multi-model AI workspace</li>
+          <li>Projects &amp; file uploads</li>
+          <li>Content templates</li>
+          <li>Monthly usage credits</li>
+        </ul>
+        <a href="#cta" class="price-btn outline">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="price-name">Pro Studio</div>
+        <div class="price-amount">$49<span>/mo</span></div>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li>Everything in Creator</li>
+          <li>Premium model access</li>
+          <li>Content calendar workflows</li>
+          <li>Analytics dashboard</li>
+        </ul>
+        <a href="#cta" class="price-btn outline">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="featured-badge">⚡ Most Popular</div>
+        <div class="price-name">Starter Command Agent</div>
+        <div class="price-amount">$499<span>/mo</span></div>
+        <div class="price-setup">+ $1,500 one-time setup</div>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li>Lead capture &amp; webhook</li>
+          <li>AI follow-up drafts</li>
+          <li>Deal tracker</li>
+          <li>Daily business brief</li>
+          <li>Website health monitor</li>
+          <li>Human approval workflow</li>
+        </ul>
+        <a href="#cta" class="price-btn solid">Book a Free Audit</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="price-name">Growth Command Agent</div>
+        <div class="price-amount">$1,500<span>/mo</span></div>
+        <div class="price-setup">+ $5,000 one-time setup</div>
+        <hr class="price-divider">
+        <ul class="price-features">
+          <li>CRM integration</li>
+          <li>Lead scoring</li>
+          <li>Pipeline reporting</li>
+          <li>Weekly optimization</li>
+          <li>Reminders &amp; stale deal alerts</li>
+        </ul>
+        <a href="#cta" class="price-btn outline">Book a Free Audit</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="section-inner">
+    <div class="cta-box">
+      <div class="section-tag" style="margin-bottom:1.5rem;">Free AI Command Audit</div>
+      <h2>We'll Find 5 Workflows<br><span style="color:var(--gold);">You Can Automate This Week.</span></h2>
+      <p>We identify 5 automation opportunities in your business, then install the first one free if you move forward. No pressure. Real value.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:hello@nerdcommand.info" class="btn-primary">Book Your Free Audit</a>
+        <a href="#divisions" class="btn-secondary">Explore Divisions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:center;">
+    <div>
+      <div class="footer-logo">Nerd<span>Command</span>.info</div>
+      <div class="footer-copy" style="margin-top:4px;">© 2026 GangsterNerds LLC. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#divisions">Divisions</a>
+      <a href="#agent">Business Agent</a>
+      <a href="#trading">Trading Brain</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>

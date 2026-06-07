@@ -1,0 +1,31 @@
+{
+  "project": "nerdcommand-site",
+  "organization": "GangsterNerds LLC",
+  "github": {
+    "owner": "chapmancapital1",
+    "repo": "nerdcommand-site",
+    "branch": "main",
+    "primary_file": "index.html"
+  },
+  "site": {
+    "live_url": "https://chapmancapital1.github.io/nerdcommand-site/",
+    "custom_domain": "nerdcommand.info",
+    "custom_domain_wired": false,
+    "contact_email": "hello@nerdcommand.info"
+  },
+  "monitoring": {
+    "enabled": true,
+    "interval_minutes": 30,
+    "checks": ["uptime", "response_time", "page_title", "contact_link", "sections", "ssl"],
+    "alert_threshold_ms": 3000,
+    "log_file": "monitor_log.json"
+  },
+  "sections": {
+    "hero": "class=\"hero\"",
+    "divisions": "id=\"divisions\"",
+    "agent": "id=\"agent\"",
+    "trading": "id=\"trading\"",
+    "pricing": "id=\"pricing\"",
+    "cta": "id=\"cta\""
+  }
+}
