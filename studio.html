@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NerdCommand Studio — Autonomous AI Movie Production</title>
+<meta name="description" content="Write a script. NerdCommand Studio renders the full cinematic sequence — images, video, audio, and final cut. Built for creators who refuse to be limited by tools.">
+<meta property="og:title" content="NerdCommand Studio — AI Movie Production">
+<meta property="og:description" content="From script to screen. Multi-model AI production pipeline for creators, filmmakers, and storytellers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#F5C518;
+  --gold-dark:#D4A017;
+  --gold-dim:rgba(245,197,24,0.1);
+  --gold-mid:rgba(245,197,24,0.28);
+  --blue:#60A5FA;
+  --blue-dim:rgba(96,165,250,0.1);
+  --blue-mid:rgba(96,165,250,0.28);
+  --purple:#A78BFA;
+  --green:#3ECF8E;
+  --black:#0A0A0E;
+  --surface:#111118;
+  --surface2:#18181F;
+  --surface3:#1E1E28;
+  --text:#F4F0E8;
+  --text-muted:rgba(244,240,232,0.55);
+  --text-faint:rgba(244,240,232,0.3);
+  --border:rgba(244,240,232,0.08);
+  --border-blue:rgba(96,165,250,0.25);
+}
+body{background:var(--black);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,14,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-badge{width:34px;height:34px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#000;}
+.logo-text{font-weight:700;font-size:16px;color:var(--text);}
+.logo-text span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-cta{background:var(--blue);color:#fff;padding:8px 22px;border-radius:8px;font-weight:700;font-size:14px;transition:background 0.2s;}
+.nav-cta:hover{background:#3b82f6;}
+
+/* HERO */
+.hero{padding:100px 32px 80px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border);}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:1000px;height:600px;background:radial-gradient(ellipse at 50% 20%, rgba(96,165,250,0.08) 0%,rgba(167,139,250,0.04) 40%,transparent 70%);pointer-events:none;}
+.hero-inner{position:relative;max-width:840px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue-dim);border:1px solid var(--border-blue);border-radius:100px;padding:5px 18px;font-size:12px;font-weight:600;color:var(--blue);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(40px,6vw,76px);font-weight:900;line-height:1.02;letter-spacing:-0.035em;margin-bottom:24px;}
+.hero h1 .accent-blue{color:var(--blue);}
+.hero h1 .accent-gold{color:var(--gold);}
+.hero-lede{font-size:19px;color:var(--text-muted);line-height:1.65;max-width:620px;margin:0 auto 40px;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-blue{background:var(--blue);color:#fff;padding:14px 32px;border-radius:9px;font-weight:700;font-size:15px;transition:all 0.2s;display:inline-block;}
+.btn-blue:hover{background:#3b82f6;transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--text);padding:14px 32px;border-radius:9px;font-weight:600;font-size:15px;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);}
+.hero-universes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:48px;}
+.universe-pill{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:12px;color:var(--text-muted);}
+.universe-dot{width:6px;height:6px;border-radius:50%;}
+
+/* SHARED */
+section{padding:96px 32px;}
+.section-inner{max-width:1160px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.section-h{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px;}
+.section-h .accent{color:var(--blue);}
+.section-h .accent-gold{color:var(--gold);}
+.section-sub{font-size:17px;color:var(--text-muted);max-width:560px;line-height:1.65;}
+
+/* PIPELINE STEPS */
+.pipeline{background:var(--surface);}
+.pipeline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.pipeline-step{background:var(--surface2);padding:36px 28px;position:relative;}
+.pipeline-step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));}
+.ps-num{font-family:'Fraunces',serif;font-size:42px;font-weight:900;color:rgba(96,165,250,0.2);line-height:1;margin-bottom:12px;}
+.ps-icon{font-size:28px;margin-bottom:14px;}
+.ps-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.ps-body{font-size:13px;color:var(--text-muted);line-height:1.65;}
+
+/* MODELS */
+.models-section{background:var(--black);}
+.models-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;}
+.model-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color 0.2s;}
+.model-card:hover{border-color:var(--border-blue);}
+.model-logo{font-size:28px;margin-bottom:14px;}
+.model-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.model-role{font-size:13px;color:var(--blue);font-weight:600;margin-bottom:10px;}
+.model-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
+
+/* UNIVERSES */
+.universes-section{background:var(--surface);}
+.universes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
+.universe-card{background:var(--surface2);border:1px solid var(--border);border-radius:18px;padding:32px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.2s;}
+.universe-card:hover{border-color:var(--border-blue);transform:translateY(-3px);}
+.universe-card-accent{position:absolute;top:0;left:0;right:0;height:3px;}
+.universe-status{display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:16px;}
+.status-complete{background:rgba(62,207,142,0.12);color:#3ECF8E;border:1px solid rgba(62,207,142,0.25);}
+.status-active{background:var(--blue-dim);color:var(--blue);border:1px solid var(--border-blue);}
+.universe-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em;}
+.universe-genre{font-size:12px;color:var(--text-faint);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;}
+.universe-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+.universe-outputs{display:flex;flex-direction:column;gap:6px;}
+.universe-output{font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px;}
+.universe-output::before{content:'✓';font-weight:700;}
+
+/* FEATURES */
+.features-section{background:var(--black);}
+.features-bento{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;gap:16px;margin-top:56px;}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;transition:border-color 0.2s;}
+.feat-card:hover{border-color:var(--border-blue);}
+.feat-card.wide{grid-column:span 2;}
+.feat-icon{font-size:32px;margin-bottom:16px;}
+.feat-title{font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.feat-body{font-size:14px;color:var(--text-muted);line-height:1.65;}
+.feat-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+.feat-tag{font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;background:var(--blue-dim);color:var(--blue);border:1px solid var(--border-blue);}
+
+/* LEAD FORM */
+.lead-section{background:var(--surface2);border-top:1px solid var(--border);}
+.lead-inner{max-width:600px;margin:0 auto;text-align:center;}
+.lead-inner .section-h{margin-bottom:12px;}
+.lead-inner .section-sub{margin:0 auto 40px;}
+.lead-form{display:flex;flex-direction:column;gap:14px;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-field label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+.form-field input,.form-field select,.form-field textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-field input:focus,.form-field select:focus{border-color:var(--border-blue);}
+.form-field select option{background:var(--surface);}
+.form-submit{background:var(--blue);color:#fff;border:none;padding:15px 32px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;width:100%;transition:background 0.2s;font-family:'Inter',sans-serif;}
+.form-submit:hover{background:#3b82f6;}
+.form-note{font-size:12px;color:var(--text-faint);text-align:center;margin-top:4px;}
+.form-success{display:none;text-align:center;padding:40px;background:var(--blue-dim);border:1px solid var(--border-blue);border-radius:16px;}
+.form-success h3{font-size:20px;font-weight:700;color:var(--blue);margin-bottom:8px;}
+.form-success p{font-size:14px;color:var(--text-muted);}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--border);padding:48px 32px;}
+.footer-inner{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-brand{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);}
+.footer-brand span{color:var(--gold);}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap;}
+.footer-links a{font-size:13px;color:var(--text-muted);transition:color 0.2s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:12px;color:var(--text-faint);width:100%;margin-top:8px;}
+
+@media(max-width:900px){
+  .pipeline-grid,.models-grid,.universes-grid{grid-template-columns:1fr;}
+  .features-bento{grid-template-columns:1fr;}
+  .feat-card.wide{grid-column:span 1;}
+  .form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-badge">NC</div>
+      <div class="logo-text">Nerd<span>Command</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="studio.html" class="active" style="color:var(--text);">Studio</a>
+    </div>
+    <a href="#lead" class="nav-cta">Get Studio Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">🎬 NerdCommand Studio</div>
+    <h1>Write It.<br><span class="accent-blue">Render It.</span><br><span class="accent-gold">Ship It.</span></h1>
+    <p class="hero-lede">Autonomous AI movie production pipeline. From script to full cinematic cut — images, video, audio, title cards, and color grade — all from one command. No crew required.</p>
+    <div class="hero-btns">
+      <a href="#lead" class="btn-blue">Get Studio Access — Free</a>
+      <a href="#pipeline" class="btn-outline">See the Pipeline</a>
+    </div>
+    <div class="hero-universes">
+      <div class="universe-pill"><div class="universe-dot" style="background:#F5C518;"></div>Exodus Horizon Legacy</div>
+      <div class="universe-pill"><div class="universe-dot" style="background:#60A5FA;"></div>Nubian Shadows: Blood Relic</div>
+      <div class="universe-pill"><div class="universe-dot" style="background:#3ECF8E;"></div>Hero's Open Source</div>
+      <div class="universe-pill"><div class="universe-dot" style="background:#A78BFA;"></div>More universes coming</div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline" id="pipeline">
+  <div class="section-inner">
+    <div class="eyebrow">The production pipeline</div>
+    <h2 class="section-h">Script to Screen in <span class="accent">4 Stages</span></h2>
+    <p class="section-sub">NerdCommand Studio orchestrates every stage of production — no individual tool-wrangling, no manual assembly. One command kicks off the whole chain.</p>
+    <div class="pipeline-grid">
+      <div class="pipeline-step">
+        <div class="ps-num">01</div>
+        <div class="ps-icon">📝</div>
+        <div class="ps-title">Script &amp; Shot Bible</div>
+        <div class="ps-body">Write your script or prompt the AI to generate one. Studio parses it into a structured shot bible — scene by scene, character by character.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="ps-num">02</div>
+        <div class="ps-icon">🎨</div>
+        <div class="ps-title">Image Generation</div>
+        <div class="ps-body">Every scene is rendered as a still or video clip via ComfyUI, Wan2.2, or CogView — with your character and style locked in via consistency prompts.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="ps-num">03</div>
+        <div class="ps-icon">🎞️</div>
+        <div class="ps-title">Cinematic Assembly</div>
+        <div class="ps-body">Segments are encoded with grade presets (CINEMATIC, NOIR, FLASHBACK), title cards, audio fades, and letterbox — then losslessly concatenated.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="ps-num">04</div>
+        <div class="ps-icon">🚀</div>
+        <div class="ps-title">Export &amp; Distribute</div>
+        <div class="ps-body">Final cut exports at 1280×720. Social cuts — Reels, TikTok, LinkedIn — are automatically trimmed and formatted from the same assembly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section class="models-section" id="models">
+  <div class="section-inner">
+    <div class="eyebrow">Multi-model AI engine</div>
+    <h2 class="section-h">The Best AI Models,<br><span class="accent-gold">Orchestrated Together</span></h2>
+    <p class="section-sub">Studio doesn't lock you into one AI. It picks the right model for each job — then stitches the outputs into one seamless production.</p>
+    <div class="models-grid">
+      <div class="model-card">
+        <div class="model-logo">🤖</div>
+        <div class="model-name">Claude (Anthropic)</div>
+        <div class="model-role">Director &amp; Script Brain</div>
+        <div class="model-desc">Drives the creative decisions — scene planning, shot bible generation, character voice, title card copy, and production orchestration.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-logo">🎥</div>
+        <div class="model-name">Wan2.2 / ComfyUI</div>
+        <div class="model-role">Video &amp; Image Generation</div>
+        <div class="model-desc">Renders scene stills and video clips with full style control — motion, camera angle, lighting, and character consistency across every shot.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-logo">🎨</div>
+        <div class="model-name">CogView (Zhipu)</div>
+        <div class="model-role">Concept Art &amp; Stills</div>
+        <div class="model-desc">High-fidelity image generation for character sheets, environment stills, key art, and promotional materials — all prompt-driven.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-logo">🔧</div>
+        <div class="model-name">FFmpeg Pipeline</div>
+        <div class="model-role">Assembly &amp; Grading Engine</div>
+        <div class="model-desc">Per-segment encode with lossless concat. 30ms audio fades, cinematic color grades, letterbox/pillarbox normalization, title card overlay.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-logo">🎵</div>
+        <div class="model-name">Audio Engine</div>
+        <div class="model-role">Score &amp; SFX Sync</div>
+        <div class="model-desc">Sync original scores, licensed tracks, or AI-generated audio to your cut. Beat-drop timing, fade control, and per-scene audio mixing built in.</div>
+      </div>
+      <div class="model-card">
+        <div class="model-logo">📱</div>
+        <div class="model-name">Social Content Engine</div>
+        <div class="model-role">Distribute &amp; Schedule</div>
+        <div class="model-desc">Auto-cut Reels and TikToks from your feature. Generate caption copy, hashtags, and post schedule — all from the same production run.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIVERSES -->
+<section class="universes-section" id="universes">
+  <div class="section-inner">
+    <div class="eyebrow">Active NerdCommand Universes</div>
+    <h2 class="section-h">Real Films.<br><span class="accent">Already in Production.</span></h2>
+    <p class="section-sub">NerdCommand Studio isn't a demo. These are live cinematic universes built by the same system you're about to access.</p>
+    <div class="universes-grid">
+      <div class="universe-card">
+        <div class="universe-card-accent" style="background:linear-gradient(90deg,#F5C518,#D4A017);"></div>
+        <div class="universe-status status-complete">✓ Complete</div>
+        <div class="universe-title">Exodus Horizon Legacy</div>
+        <div class="universe-genre">Nubian Sci-Fi · Afro-Futurist Space Opera</div>
+        <div class="universe-desc">An epic journey across a collapsing civilization. Afro-futurist aesthetics, orbital battles, and a legacy that spans generations.</div>
+        <div class="universe-outputs">
+          <div class="universe-output">Trailer v1 — 2:15 complete</div>
+          <div class="universe-output">Trailer v2 — 2:02 complete</div>
+        </div>
+      </div>
+      <div class="universe-card">
+        <div class="universe-card-accent" style="background:linear-gradient(90deg,#60A5FA,#3b82f6);"></div>
+        <div class="universe-status status-complete">✓ Complete</div>
+        <div class="universe-title">Nubian Shadows: Blood Relic</div>
+        <div class="universe-genre">Cyberpunk Detective Thriller · New Cairo 2040</div>
+        <div class="universe-desc">Detective Brad Hopkins and KHEPRI-9 — a cyborg panther — hunt Ghost Palms PMC for the Eye of Taharqa across a fractured cyberpunk city.</div>
+        <div class="universe-outputs">
+          <div class="universe-output">Trailer v1 — 2:12 complete</div>
+          <div class="universe-output">Full character bible locked</div>
+        </div>
+      </div>
+      <div class="universe-card">
+        <div class="universe-card-accent" style="background:linear-gradient(90deg,#3ECF8E,#10b981);"></div>
+        <div class="universe-status status-complete">✓ Complete</div>
+        <div class="universe-title">Hero's Open Source</div>
+        <div class="universe-genre">Warrior Epic · Sub-Saharan Afro-Futurist</div>
+        <div class="universe-desc">Ancient warriors. Future weapons. A continent defending itself against forces that cannot be named. The most kinetic universe in the NerdCommand catalog.</div>
+        <div class="universe-outputs">
+          <div class="universe-output">Movie — 5:06 complete</div>
+          <div class="universe-output">Trailer — 1:55 complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-inner">
+    <div class="eyebrow">Studio features</div>
+    <h2 class="section-h">Everything a Filmmaker Needs.<br><span class="accent-gold">Nothing They Don't.</span></h2>
+    <div class="features-bento">
+      <div class="feat-card wide">
+        <div class="feat-icon">🎬</div>
+        <div class="feat-title">Full Cinematic Grade System</div>
+        <div class="feat-body">Five professional color presets built in — one flag in your command and the entire output gets graded. No color work required. CINEMATIC gives you film-look warm shadows and punchy highlights. NOIR drops saturation and cranks contrast. FLASHBACK adds a sepia warmth with slightly crushed black. COOL and WARM handle the rest.</div>
+        <div class="feat-tags">
+          <span class="feat-tag">CINEMATIC</span>
+          <span class="feat-tag">NOIR</span>
+          <span class="feat-tag">FLASHBACK</span>
+          <span class="feat-tag">WARM</span>
+          <span class="feat-tag">COOL</span>
+        </div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧬</div>
+        <div class="feat-title">Character Consistency Engine</div>
+        <div class="feat-body">Your characters look the same in every shot, every scene, every universe. Consistency prompts are locked to each character profile and injected automatically into every generation.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-title">Auto-Recover on Error</div>
+        <div class="feat-body">If any segment fails during render, Studio diagnoses, fixes, and re-runs that segment only. The rest of your film keeps building. Full productions never abort on a single error.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📋</div>
+        <div class="feat-title">Timeline JSON + Edit Plan</div>
+        <div class="feat-body">Every production generates a structured timeline.json, edit_plan.md, and scene_index.csv — so your work is documented, version-controlled, and resumable at any point.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <div class="feat-title">Auto Social Cuts</div>
+        <div class="feat-body">Reels, TikToks, and LinkedIn posts are cut from your feature automatically. Caption copy and hashtags generated from the scene data. Post schedule output to your social queue.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="lead-section" id="lead">
+  <div class="section-inner">
+    <div class="lead-inner">
+      <div class="eyebrow" style="text-align:center;color:var(--blue);">Get Studio Access</div>
+      <h2 class="section-h" style="text-align:center;">Start Making Films.<br><span class="accent-gold">It's Free to Start.</span></h2>
+      <p class="section-sub" style="margin:0 auto 40px;">Tell us about your project and we'll get you set up with NerdCommand Studio. Early access members get priority onboarding and locked-in pricing.</p>
+
+      <form class="lead-form" id="studioForm"
+            action="https://formspree.io/f/xpwzogwn"
+            method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" name="first_name" placeholder="Your first name" required>
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" name="last_name" placeholder="Your last name" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" name="email" placeholder="you@youremail.com" required>
+        </div>
+        <div class="form-field">
+          <label>What are you creating?</label>
+          <select name="project_type">
+            <option value="">Select one...</option>
+            <option value="short_film">Short film or cinematic trailer</option>
+            <option value="social_content">Social media content (Reels, TikTok)</option>
+            <option value="series">Episodic series or universe</option>
+            <option value="brand_content">Brand or commercial content</option>
+            <option value="other">Something else — tell us</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Tell us about your project (optional)</label>
+          <textarea name="project_description" placeholder="Genre, universe, characters, what you're trying to build..."></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="New Studio Access Request — NerdCommand">
+        <input type="hidden" name="source" value="studio-page">
+        <button type="submit" class="form-submit">Request Studio Access →</button>
+        <p class="form-note">No credit card. No spam. We'll reach out within 24 hours.</p>
+      </form>
+
+      <div class="form-success" id="studioSuccess">
+        <h3>🎬 Access request received.</h3>
+        <p>We'll be in touch within 24 hours to get your Studio environment set up. Check your inbox — this is going to be fun.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Nerd<span>Command</span> Studio</div>
+      <div style="font-size:13px;color:var(--text-faint);margin-top:4px;">Autonomous AI Movie Production · GangsterNerds LLC</div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="#lead">Get Access</a>
+      <a href="mailto:hello@nerdcommand.info">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 GangsterNerds LLC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+const form = document.getElementById('studioForm');
+const success = document.getElementById('studioSuccess');
+if(form){
+  form.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try{
+      const res = await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(res.ok){form.style.display='none';success.style.display='block';}
+      else{btn.textContent='Try Again';btn.disabled=false;}
+    }catch(err){btn.textContent='Try Again';btn.disabled=false;}
+  });
+}
+</script>
+</body>
+</html>

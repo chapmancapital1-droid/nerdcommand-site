@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeckBrief — Your AI Business Command Agent</title>
+<meta name="description" content="DeckBrief captures your leads, drafts the follow-ups, tracks your deals, and sends you a clear morning briefing — every single day. No dashboard to check. No lead left behind.">
+<meta property="og:title" content="DeckBrief — AI Business Command Agent">
+<meta property="og:description" content="Capture every lead. Draft every follow-up. Get your daily brief at 7 AM. Built for small business owners who don't have time to babysit a CRM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0A0A0E;
+  --card:#111118;
+  --card2:#18181F;
+  --card3:#1E1E28;
+  --accent:#F5A623;
+  --accent-dim:rgba(245,166,35,0.12);
+  --accent-mid:rgba(245,166,35,0.35);
+  --gold:#F5C518;
+  --text:#F4F0E8;
+  --text-muted:rgba(244,240,232,0.58);
+  --text-faint:rgba(244,240,232,0.3);
+  --border:rgba(244,240,232,0.08);
+  --border-accent:rgba(245,166,35,0.28);
+  --green:#3ECF8E;
+  --blue:#60A5FA;
+  --section:#0E0E14;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,14,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-badge{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;letter-spacing:-0.3px;}
+.logo-text{font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:var(--text);}
+.nav-sub{font-size:12px;color:var(--text-faint);margin-left:8px;font-family:'DM Sans',sans-serif;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-home{font-size:13px;color:var(--text-muted);border:1px solid var(--border);padding:6px 14px;border-radius:7px;transition:all 0.2s;}
+.nav-home:hover{border-color:var(--border-accent);color:var(--accent);}
+.nav-cta{background:var(--accent);color:#fff;padding:8px 22px;border-radius:8px;font-weight:600;font-size:14px;transition:background 0.2s;}
+.nav-cta:hover{background:#d4820a;}
+
+/* HERO */
+.hero{padding:88px 32px 64px;border-bottom:1px solid var(--border);}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(40px,5.5vw,68px);font-weight:900;line-height:1.04;letter-spacing:-0.03em;margin-bottom:22px;}
+.hero h1 span{color:var(--accent);}
+.hero-lede{font-size:18px;color:var(--text-muted);line-height:1.65;max-width:480px;margin-bottom:36px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-accent{background:var(--accent);color:#fff;padding:13px 30px;border-radius:9px;font-weight:600;font-size:15px;transition:all 0.2s;display:inline-block;}
+.btn-accent:hover{background:#d4820a;transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--text);padding:13px 30px;border-radius:9px;font-weight:500;font-size:15px;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
+.btn-ghost:hover{border-color:var(--border-accent);color:var(--accent);}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px;}
+.hero-tag{font-size:12px;color:var(--text-faint);padding:5px 14px;border:1px solid var(--border);border-radius:100px;}
+
+/* BRIEF CARD */
+.brief-card-wrap{display:flex;flex-direction:column;gap:12px;}
+.brief-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:26px;}
+.brief-card--main{border-color:var(--accent-mid);background:linear-gradient(135deg,var(--card) 0%,rgba(245,166,35,0.04) 100%);}
+.bcard-label{font-size:10px;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
+.bcard-rows{display:flex;flex-direction:column;gap:14px;}
+.bcard-row{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text);line-height:1.4;}
+.bdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.bdot-green{background:var(--green);box-shadow:0 0 8px rgba(62,207,142,0.5);}
+.bdot-amber{background:var(--accent);box-shadow:0 0 8px rgba(245,166,35,0.5);}
+.bdot-blue{background:var(--blue);box-shadow:0 0 8px rgba(96,165,250,0.5);}
+.bcard-time{margin-top:18px;font-size:11px;color:var(--text-faint);letter-spacing:0.06em;}
+.bcard-actions{display:flex;gap:8px;margin-top:14px;}
+.baction{flex:1;background:var(--accent-dim);border:1px solid var(--border-accent);border-radius:8px;padding:9px;text-align:center;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;transition:background 0.2s;}
+.baction:hover{background:rgba(245,166,35,0.2);}
+.baction-ghost{background:var(--card2);border-color:var(--border);color:var(--text-muted);}
+.brief-card--secondary{background:var(--card2);display:flex;flex-direction:column;gap:10px;padding:18px 24px;}
+.bstatus{font-size:13px;color:var(--text-muted);display:flex;align-items:center;gap:10px;}
+.bstatus::before{content:'';display:block;width:18px;height:18px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent-mid);flex-shrink:0;}
+
+/* SECTIONS */
+section{padding:96px 32px;}
+.si{max-width:1100px;margin:0 auto;}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.sh{font-family:'Fraunces',serif;font-size:clamp(26px,4vw,44px);font-weight:700;line-height:1.15;letter-spacing:-0.02em;margin-bottom:16px;max-width:640px;}
+.sh span{color:var(--accent);}
+.ss{font-size:17px;color:var(--text-muted);max-width:560px;line-height:1.65;}
+
+/* HOW */
+.how{background:var(--section);}
+.steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;margin-top:56px;gap:0;}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;}
+.step-num{width:42px;height:42px;background:var(--accent-dim);border:1px solid var(--accent-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--accent);margin-bottom:18px;}
+.step-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.step-body{font-size:14px;color:var(--text-muted);line-height:1.65;}
+.step-connector{height:1px;background:linear-gradient(90deg,transparent,var(--accent-mid),transparent);width:48px;align-self:center;margin:0 -8px;}
+
+/* FEATURES */
+.features{background:var(--bg);}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.feat{background:var(--card);padding:36px;}
+.feat:hover{background:var(--card2);}
+.feat-icon{margin-bottom:18px;}
+.feat-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.feat-body{font-size:14px;color:var(--text-muted);line-height:1.65;}
+
+/* INSIGHT */
+.insight{background:var(--section);}
+.insight-layout{display:grid;grid-template-columns:260px 1fr;gap:80px;align-items:center;}
+.big-stat{font-family:'Fraunces',serif;font-size:84px;font-weight:900;color:var(--accent);line-height:1;letter-spacing:-0.04em;margin-bottom:14px;}
+.stat-label{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:8px;}
+.stat-source{font-size:11px;color:var(--text-faint);letter-spacing:0.05em;}
+.insight-headline{font-family:'Fraunces',serif;font-size:clamp(22px,3vw,34px);font-weight:700;line-height:1.25;letter-spacing:-0.02em;color:var(--text);margin-bottom:18px;}
+.insight-body{font-size:16px;color:var(--text-muted);line-height:1.7;}
+.insight-gap{background:var(--card);border:1px solid var(--border-accent);border-radius:14px;padding:20px;margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.gap-stat{text-align:center;}
+.gap-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;line-height:1;}
+.gap-label{font-size:11px;color:var(--text-faint);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* LEAD FORM */
+.lead-section{background:var(--card2);border-top:1px solid var(--border);}
+.lead-inner{max-width:580px;margin:0 auto;text-align:center;}
+.lead-inner .sh{max-width:100%;text-align:center;margin-bottom:12px;}
+.lead-inner .ss{margin:0 auto 40px;}
+.lead-form{display:flex;flex-direction:column;gap:14px;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-field label{display:block;font-size:12px;font-weight:500;color:var(--text-muted);margin-bottom:6px;letter-spacing:0.03em;}
+.form-field input,.form-field select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-field input:focus,.form-field select:focus{border-color:var(--border-accent);}
+.form-field select option{background:var(--card);}
+.form-submit{background:var(--accent);color:#fff;border:none;padding:15px 32px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;width:100%;transition:background 0.2s;font-family:'DM Sans',sans-serif;}
+.form-submit:hover{background:#d4820a;}
+.form-note{font-size:12px;color:var(--text-faint);text-align:center;margin-top:4px;}
+.form-success{display:none;text-align:center;padding:40px;background:var(--accent-dim);border:1px solid var(--border-accent);border-radius:16px;}
+.form-success h3{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--accent);margin-bottom:10px;}
+.form-success p{font-size:14px;color:var(--text-muted);}
+
+/* CLOSING */
+.closing{border-top:1px solid var(--border);text-align:center;}
+.closing-h{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,56px);font-weight:900;letter-spacing:-0.03em;color:var(--text);margin-bottom:22px;line-height:1.08;}
+.closing-body{font-size:18px;color:var(--text-muted);max-width:540px;margin:0 auto 36px;line-height:1.65;}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 32px;}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-brand{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);}
+.footer-tagline{font-size:13px;color:var(--text-faint);margin-top:4px;}
+.footer-links{display:flex;gap:28px;}
+.footer-links a{font-size:13px;color:var(--text-muted);transition:color 0.2s;}
+.footer-links a:hover{color:var(--accent);}
+.footer-copy{font-size:12px;color:var(--text-faint);width:100%;margin-top:8px;}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:48px;}
+  .brief-card-wrap{display:none;}
+  .steps{grid-template-columns:1fr;gap:16px;}
+  .step-connector{display:none;}
+  .features-grid{grid-template-columns:1fr;}
+  .insight-layout{grid-template-columns:1fr;gap:40px;}
+  .insight-gap{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-badge">DB</div>
+      <div class="logo-text">DeckBrief</div>
+      <span class="nav-sub">by NerdCommand</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#insight">Why it matters</a>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <a href="index.html" class="nav-home">← NerdCommand</a>
+      <a href="#lead" class="nav-cta">Get Access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">AI Business Command Agent</div>
+      <h1>Your business,<br><span>briefed daily.</span></h1>
+      <p class="hero-lede">DeckBrief captures your leads, drafts the follow-ups, tracks your deals, and sends you a clear morning briefing — every single day. No dashboard to check. No lead left behind.</p>
+      <div class="hero-btns">
+        <a href="#lead" class="btn-accent">Get DeckBrief — Free to Start</a>
+        <a href="#how" class="btn-ghost">See How It Works</a>
+      </div>
+      <div class="hero-tags">
+        <span class="hero-tag">No setup headaches</span>
+        <span class="hero-tag">No per-seat pricing</span>
+        <span class="hero-tag">Works while you sleep</span>
+      </div>
+    </div>
+
+    <div class="brief-card-wrap">
+      <div class="brief-card brief-card--main">
+        <div class="bcard-label">Morning Brief — Today</div>
+        <div class="bcard-rows">
+          <div class="bcard-row">
+            <div class="bdot bdot-green"></div>
+            <span><strong>3 new leads</strong> from your site — 2 follow-ups drafted</span>
+          </div>
+          <div class="bcard-row">
+            <div class="bdot bdot-amber"></div>
+            <span><strong>2 deals</strong> moved to proposal stage</span>
+          </div>
+          <div class="bcard-row">
+            <div class="bdot bdot-blue"></div>
+            <span><strong>1 follow-up</strong> approved and sent automatically</span>
+          </div>
+          <div class="bcard-row">
+            <div class="bdot bdot-amber"></div>
+            <span><strong>Apex Marketing</strong> stale 6 days — action recommended ⚠️</span>
+          </div>
+        </div>
+        <div class="bcard-time">Arrives 7:00 AM &bull; Your timezone &bull; Every day</div>
+        <div class="bcard-actions">
+          <div class="baction">✓ Approve Drafts</div>
+          <div class="baction baction-ghost">View Pipeline</div>
+        </div>
+      </div>
+      <div class="brief-card brief-card--secondary">
+        <div class="bstatus">Lead captured &amp; enriched</div>
+        <div class="bstatus">Follow-up drafted in 2 min</div>
+        <div class="bstatus">Deal stage updated automatically</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="si">
+    <div class="eyebrow">How it works</div>
+    <h2 class="sh">Three steps to a business<br>that <span>runs itself</span></h2>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Install once</div>
+        <div class="step-body">Add one snippet of code to your website. That's it. DeckBrief begins capturing every visitor who fills a form, clicks a button, or starts a chat.</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">Agent takes over</div>
+        <div class="step-body">Your AI agent reads each lead, enriches their profile, drafts a personalized follow-up email, and updates your deal pipeline — all without a single click from you.</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">Brief arrives at 7 AM</div>
+        <div class="step-body">Every morning, your DeckBrief lands in your inbox before you're out of bed. New leads, deal statuses, actions needed — in plain English, not a dashboard.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="si">
+    <div class="eyebrow">What you get</div>
+    <h2 class="sh">Everything a small business owner needs.<br><span>Nothing they don't.</span></h2>
+    <div class="features-grid">
+      <div class="feat">
+        <div class="feat-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#F5A623" stroke-width="2"/><path d="M9 14l3.5 3.5L19 10" stroke="#F5A623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="feat-title">Lead Capture &amp; Enrichment</div>
+        <div class="feat-body">Every website visitor who takes action gets captured, enriched with company data, and qualified — automatically. Zero manual entry. Full source attribution.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="2" y="4" width="24" height="20" rx="3" stroke="#F5A623" stroke-width="2"/><path d="M7 10h14M7 15h9" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feat-title">AI Follow-Up Drafting</div>
+        <div class="feat-body">Personalized, human-sounding reply to every new lead — drafted within minutes of capture. You review, hit send, and move on. Never miss the 5-minute window again.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 22L10 16l4 4 6-10 4 4" stroke="#F5A623" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="feat-title">Deal Pipeline Tracking</div>
+        <div class="feat-body">Every opportunity moves through your pipeline automatically. Stale deals flagged before they die. Revenue signals tracked. No CRM to babysit — ever.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="12" r="7" stroke="#F5A623" stroke-width="2"/><path d="M14 19v4M10 23h8" stroke="#F5A623" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feat-title">7 AM Daily Brief</div>
+        <div class="feat-body">A plain-English briefing in your inbox every morning. Leads, deals, stale opportunities, and recommended actions — no dashboard required. Just decisions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHT -->
+<section class="insight" id="insight">
+  <div class="si">
+    <div class="insight-layout">
+      <div>
+        <div class="big-stat">58%</div>
+        <div class="stat-label">of U.S. small businesses used generative AI in 2025 — up from 23% in 2023.</div>
+        <div class="stat-source">US Chamber of Commerce</div>
+      </div>
+      <div>
+        <div class="eyebrow">Why it exists</div>
+        <div class="insight-headline">Most small business owners lose more leads to slow follow-up than they ever lose to competition.</div>
+        <div class="insight-body">Businesses who respond to a new lead within five minutes are 100× more likely to convert. The average response time for a small business? 47 hours. DeckBrief closes that gap automatically — no extra hires, no dashboard, no hustle required.</div>
+        <div class="insight-gap">
+          <div class="gap-stat">
+            <div class="gap-num" style="color:var(--green);">5 min</div>
+            <div class="gap-label">Response = 100× conversions</div>
+          </div>
+          <div class="gap-stat">
+            <div class="gap-num" style="color:var(--accent);">47 hrs</div>
+            <div class="gap-label">Average SMB response time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="lead-section" id="lead">
+  <div class="si">
+    <div class="lead-inner">
+      <div class="eyebrow" style="text-align:center;">Get DeckBrief</div>
+      <h2 class="sh" style="max-width:100%;text-align:center;">Start capturing leads.<br><span>It's free to start.</span></h2>
+      <p class="ss" style="margin:0 auto 40px;text-align:center;">Tell us about your business and we'll get your DeckBrief agent set up. Early access members get priority onboarding and locked-in pricing.</p>
+
+      <form class="lead-form" id="deckbriefForm"
+            action="https://formspree.io/f/xpwzogwn"
+            method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" name="first_name" placeholder="Your first name" required>
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" name="last_name" placeholder="Your last name" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Business Email</label>
+          <input type="email" name="email" placeholder="you@yourbusiness.com" required>
+        </div>
+        <div class="form-field">
+          <label>Business Name</label>
+          <input type="text" name="business_name" placeholder="Your Business LLC">
+        </div>
+        <div class="form-field">
+          <label>How many leads do you get per month?</label>
+          <select name="lead_volume">
+            <option value="">Select one...</option>
+            <option value="<10">Fewer than 10</option>
+            <option value="10-50">10 – 50</option>
+            <option value="50-200">50 – 200</option>
+            <option value="200+">200+</option>
+          </select>
+        </div>
+        <input type="hidden" name="_subject" value="New DeckBrief Lead">
+        <input type="hidden" name="source" value="deckbrief-page">
+        <button type="submit" class="form-submit">Get My DeckBrief Agent →</button>
+        <p class="form-note">No credit card. No spam. We'll reach out within 24 hours.</p>
+      </form>
+
+      <div class="form-success" id="deckbriefSuccess">
+        <h3>You're in — agent incoming.</h3>
+        <p>We'll be in touch within 24 hours to get your DeckBrief agent set up and capturing leads. Check your inbox.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="si" style="text-align:center;max-width:700px;margin:0 auto;">
+    <h2 class="closing-h">Your business, running<br>while you sleep.</h2>
+    <p class="closing-body">Every lead captured. Every follow-up drafted. Every deal tracked. And a morning briefing waiting in your inbox — clear, concise, and ready to act on.</p>
+    <a href="#lead" class="btn-accent">Get DeckBrief Now →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">DeckBrief</div>
+      <div class="footer-tagline">AI Business Command Agent · by NerdCommand</div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">NerdCommand Home</a>
+      <a href="studio.html">Studio</a>
+      <a href="#lead">Get Access</a>
+      <a href="mailto:hello@nerdcommand.info">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 GangsterNerds LLC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+const form=document.getElementById('deckbriefForm');
+const success=document.getElementById('deckbriefSuccess');
+if(form){
+  form.addEventListener('submit',async(e)=>{
+    e.preventDefault();
+    const btn=form.querySelector('.form-submit');
+    btn.textContent='Sending...';btn.disabled=true;
+    try{
+      const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(res.ok){form.style.display='none';success.style.display='block';}
+      else{btn.textContent='Try Again';btn.disabled=false;}
+    }catch(err){btn.textContent='Try Again';btn.disabled=false;}
+  });
+}
+</script>
+</body>
+</html>

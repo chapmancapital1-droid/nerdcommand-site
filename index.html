@@ -3,507 +3,504 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NerdCommand.info | AI Command Center</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<title>NerdCommand — AI Command Center for Creators & Business</title>
+<meta name="description" content="NerdCommand gives small businesses and creators AI superpowers. Lead capture, daily briefs, AI studio, and trading intelligence — all in one command center.">
+<meta property="og:title" content="NerdCommand — AI Command Center">
+<meta property="og:description" content="Capture leads, draft follow-ups, run an AI studio, and get your daily business brief. Built for creators and small business owners who move fast.">
+<meta property="og:image" content="https://chapmancapital1.github.io/nerdcommand-site/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --gold:#F5C518;
   --gold-dark:#D4A017;
-  --gold-dim:#8a6d0a;
-  --black:#0a0a0a;
-  --surface:#111111;
-  --surface2:#1a1a1a;
-  --surface3:#222222;
-  --text:#f0f0f0;
-  --text-muted:#888;
-  --border:#2a2a2a;
-  --white:#ffffff;
+  --gold-dim:rgba(245,197,24,0.12);
+  --gold-mid:rgba(245,197,24,0.3);
+  --black:#0A0A0E;
+  --surface:#111118;
+  --surface2:#18181F;
+  --surface3:#1E1E26;
+  --text:#F4F0E8;
+  --text-muted:rgba(244,240,232,0.55);
+  --text-faint:rgba(244,240,232,0.3);
+  --border:rgba(244,240,232,0.08);
+  --border-gold:rgba(245,197,24,0.25);
+  --green:#3ECF8E;
+  --blue:#60A5FA;
 }
 body{background:var(--black);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.95);border-bottom:1px solid var(--border);padding:0 2rem;}
-.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,14,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;}
 .logo{display:flex;align-items:center;gap:10px;}
-.logo-badge{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#000;letter-spacing:-0.5px;}
-.logo-text{font-weight:700;font-size:16px;color:var(--white);}
+.logo-badge{width:34px;height:34px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#000;letter-spacing:-0.5px;}
+.logo-text{font-weight:700;font-size:16px;color:var(--text);}
 .logo-text span{color:var(--gold);}
-.nav-links{display:flex;align-items:center;gap:2rem;}
-.nav-links a{color:var(--text-muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;}
-.nav-links a:hover{color:var(--gold);}
-.nav-cta{background:var(--gold);color:#000;padding:8px 20px;border-radius:6px;font-weight:700;font-size:14px;text-decoration:none;transition:background 0.2s;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--gold);color:#000;padding:8px 22px;border-radius:8px;font-weight:700;font-size:14px;transition:background 0.2s;}
 .nav-cta:hover{background:var(--gold-dark);}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 2rem 4rem;position:relative;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 800px 600px at 50% 40%, rgba(245,197,24,0.06) 0%, transparent 70%);}
-.hero-inner{position:relative;max-width:900px;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:0.5px;margin-bottom:2rem;text-transform:uppercase;}
-.hero h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem;}
+.hero{min-height:92vh;display:flex;align-items:center;padding:80px 32px 60px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 50% 30%, rgba(245,197,24,0.07) 0%, transparent 65%);pointer-events:none;}
+.hero-inner{max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:100px;padding:5px 16px;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;}
 .hero h1 span{color:var(--gold);}
-.hero-sub{font-size:1.2rem;color:var(--text-muted);max-width:600px;margin:0 auto 2.5rem;}
-.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.btn-primary{background:var(--gold);color:#000;padding:14px 32px;border-radius:8px;font-weight:700;font-size:16px;text-decoration:none;transition:all 0.2s;display:inline-block;}
-.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px);}
-.btn-secondary{background:transparent;color:var(--white);padding:14px 32px;border-radius:8px;font-weight:600;font-size:16px;text-decoration:none;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
-.btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
-.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:4rem;flex-wrap:wrap;}
-.stat{text-align:center;}
-.stat-num{font-size:2rem;font-weight:900;color:var(--gold);}
-.stat-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+.hero-lede{font-size:18px;color:var(--text-muted);line-height:1.65;max-width:480px;margin-bottom:36px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:#000;padding:13px 30px;border-radius:8px;font-weight:700;font-size:15px;transition:all 0.2s;display:inline-block;}
+.btn-gold:hover{background:var(--gold-dark);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--text);padding:13px 30px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-proof{display:flex;gap:28px;margin-top:40px;flex-wrap:wrap;}
+.proof-item{display:flex;flex-direction:column;}
+.proof-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--gold);letter-spacing:-0.03em;}
+.proof-label{font-size:12px;color:var(--text-faint);margin-top:2px;}
 
-/* SECTION BASE */
-section{padding:6rem 2rem;}
-.section-inner{max-width:1200px;margin:0 auto;}
-.section-tag{display:inline-block;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.2);border-radius:100px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem;}
-.section-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-1px;margin-bottom:1rem;}
-.section-title span{color:var(--gold);}
-.section-sub{font-size:1.05rem;color:var(--text-muted);max-width:560px;}
+/* BRIEF CARD (hero right) */
+.brief-card{background:var(--surface);border:1px solid var(--border-gold);border-radius:20px;padding:28px;position:relative;overflow:hidden;}
+.brief-card::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(245,197,24,0.04) 0%,transparent 60%);pointer-events:none;}
+.brief-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.brief-rows{display:flex;flex-direction:column;gap:14px;}
+.brief-row{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text);}
+.bdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.bdot-green{background:var(--green);box-shadow:0 0 8px rgba(62,207,142,0.5);}
+.bdot-gold{background:var(--gold);box-shadow:0 0 8px rgba(245,197,24,0.5);}
+.bdot-blue{background:var(--blue);box-shadow:0 0 8px rgba(96,165,250,0.5);}
+.brief-time{margin-top:20px;font-size:11px;color:var(--text-faint);letter-spacing:0.06em;}
+.brief-actions{display:flex;gap:8px;margin-top:16px;}
+.baction{flex:1;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:8px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;transition:background 0.2s;}
+.baction:hover{background:rgba(245,197,24,0.2);}
+.baction-ghost{background:var(--surface2);border-color:var(--border);color:var(--text-muted);}
 
-/* DIVISIONS */
-.divisions{background:var(--surface);}
-.divisions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3.5rem;}
-.division-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.2s;cursor:pointer;text-decoration:none;display:block;color:inherit;}
-.division-card:hover{border-color:var(--gold);transform:translateY(-4px);}
-.division-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);opacity:0;transition:opacity 0.3s;}
-.division-card:hover::before{opacity:1;}
-.division-icon{width:52px;height:52px;border-radius:12px;background:rgba(245,197,24,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:24px;}
-.division-tag{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;}
-.division-name{font-size:1.25rem;font-weight:700;margin-bottom:0.75rem;color:var(--white);}
-.division-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.6;}
-.division-link{display:flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:13px;font-weight:600;color:var(--gold);}
+/* SECTIONS */
+section{padding:96px 32px;}
+.section-inner{max-width:1160px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.section-h{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,46px);font-weight:900;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px;}
+.section-h span{color:var(--gold);}
+.section-sub{font-size:17px;color:var(--text-muted);max-width:560px;line-height:1.65;}
 
-/* COMMAND AGENT */
-.agent-section{background:var(--black);}
-.agent-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3.5rem;}
-.agent-features{display:flex;flex-direction:column;gap:1.25rem;}
-.agent-feature{display:flex;gap:1rem;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;}
-.agent-feature-icon{width:40px;height:40px;border-radius:10px;background:rgba(245,197,24,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.agent-feature-text h4{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
-.agent-feature-text p{font-size:13px;color:var(--text-muted);}
-.agent-visual{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;font-family:'Inter',monospace;}
-.agent-visual-header{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
-.agent-dot{width:10px;height:10px;border-radius:50%;}
-.agent-dot.green{background:#22c55e;}
-.agent-dot.amber{background:var(--gold);}
-.agent-visual-title{font-size:13px;font-weight:600;color:var(--text-muted);}
-.brief-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;font-size:13px;}
-.brief-label{color:var(--gold);font-weight:600;min-width:90px;font-size:12px;text-transform:uppercase;}
-.brief-val{color:var(--text-muted);}
-.brief-val strong{color:var(--text);}
+/* PRODUCTS GRID */
+.products{background:var(--surface);}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.product-card{background:var(--surface2);padding:48px;position:relative;overflow:hidden;transition:background 0.2s;}
+.product-card:hover{background:var(--surface3);}
+.product-card-accent{position:absolute;top:0;left:0;right:0;height:3px;}
+.product-icon{font-size:36px;margin-bottom:20px;}
+.product-tag{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.product-name{font-family:'Fraunces',serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:12px;color:var(--text);}
+.product-desc{font-size:15px;color:var(--text-muted);line-height:1.65;margin-bottom:28px;}
+.product-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--gold);background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:8px;padding:10px 20px;transition:all 0.2s;}
+.product-link:hover{background:rgba(245,197,24,0.2);}
 
-/* PRICING */
-.pricing-section{background:var(--surface);}
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3.5rem;}
-.pricing-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;}
-.pricing-card.featured{border-color:var(--gold);background:var(--surface3);}
-.featured-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#000;font-size:12px;font-weight:700;padding:4px 16px;border-radius:100px;white-space:nowrap;}
-.price-name{font-size:14px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;}
-.price-amount{font-size:2.5rem;font-weight:900;color:var(--white);letter-spacing:-1px;}
-.price-amount span{font-size:1rem;font-weight:400;color:var(--text-muted);}
-.price-setup{font-size:13px;color:var(--gold);margin-top:4px;}
-.price-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.price-features li{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--text-muted);}
-.price-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;}
-.price-btn{display:block;text-align:center;margin-top:1.75rem;padding:12px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all 0.2s;}
-.price-btn.outline{border:1px solid var(--border);color:var(--white);}
-.price-btn.outline:hover{border-color:var(--gold);color:var(--gold);}
-.price-btn.solid{background:var(--gold);color:#000;}
-.price-btn.solid:hover{background:var(--gold-dark);}
+/* HOW IT WORKS */
+.how{background:var(--black);}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.step{background:var(--surface);padding:40px;}
+.step-num{width:44px;height:44px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--gold);margin-bottom:20px;}
+.step-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.step-body{font-size:14px;color:var(--text-muted);line-height:1.65;}
 
-/* TRADING */
-.trading-section{background:var(--black);}
-.trading-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3.5rem;}
-.strategy-cards{display:flex;flex-direction:column;gap:1rem;}
-.strategy-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;border-left:3px solid var(--gold);}
-.strategy-card h4{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px;}
-.strategy-card p{font-size:13px;color:var(--text-muted);}
-.strategy-target{display:inline-block;background:rgba(245,197,24,0.1);color:var(--gold);font-size:12px;font-weight:600;padding:2px 10px;border-radius:4px;margin-top:8px;}
+/* DECKBRIEF SECTION */
+.deckbrief-section{background:var(--surface);}
+.deckbrief-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px;}
+.db-features{display:flex;flex-direction:column;gap:16px;}
+.db-feature{display:flex;gap:14px;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color 0.2s;}
+.db-feature:hover{border-color:var(--border-gold);}
+.db-icon{width:44px;height:44px;background:var(--gold-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.db-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.db-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
 
-/* CTA SECTION */
-.cta-section{background:var(--surface);text-align:center;}
-.cta-box{background:linear-gradient(135deg,rgba(245,197,24,0.08),rgba(245,197,24,0.02));border:1px solid rgba(245,197,24,0.2);border-radius:24px;padding:5rem 3rem;max-width:800px;margin:0 auto;}
-.cta-box h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-1px;margin-bottom:1rem;}
-.cta-box p{font-size:1.1rem;color:var(--text-muted);margin-bottom:2.5rem;}
+/* STUDIO SECTION */
+.studio-section{background:var(--black);}
+.studio-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px;}
+.studio-visual{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;overflow:hidden;}
+.studio-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.stab{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+.stab.active{background:var(--gold-dim);color:var(--gold);border-color:var(--border-gold);}
+.studio-output{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.studio-output-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.studio-output-text{font-size:13px;color:var(--text-muted);line-height:1.7;}
+.studio-output-text strong{color:var(--text);}
+.studio-features-list{display:flex;flex-direction:column;gap:12px;margin-top:0;}
+.sf{display:flex;align-items:flex-start;gap:12px;}
+.sf-check{width:20px;height:20px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.sf-text{font-size:14px;color:var(--text-muted);}
+.sf-text strong{color:var(--text);}
+
+/* LEAD FORM */
+.lead-section{background:var(--surface2);}
+.lead-inner{max-width:640px;margin:0 auto;text-align:center;}
+.lead-inner .section-h{margin-bottom:12px;}
+.lead-inner .section-sub{margin:0 auto 40px;}
+.lead-form{display:flex;flex-direction:column;gap:14px;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-field label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;letter-spacing:0.04em;}
+.form-field input,.form-field select,.form-field textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--border-gold);}
+.form-field select option{background:var(--surface);}
+.form-field textarea{resize:vertical;min-height:100px;}
+.form-submit{background:var(--gold);color:#000;border:none;padding:15px 32px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;width:100%;transition:background 0.2s;font-family:'Inter',sans-serif;}
+.form-submit:hover{background:var(--gold-dark);}
+.form-note{font-size:12px;color:var(--text-faint);text-align:center;margin-top:4px;}
+.form-success{display:none;text-align:center;padding:40px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:16px;}
+.form-success h3{font-size:20px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.form-success p{font-size:14px;color:var(--text-muted);}
 
 /* FOOTER */
-footer{background:var(--black);border-top:1px solid var(--border);padding:3rem 2rem;}
-.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;}
-.footer-logo{font-weight:700;color:var(--white);}
-.footer-logo span{color:var(--gold);}
-.footer-copy{font-size:13px;color:var(--text-muted);}
-.footer-links{display:flex;gap:2rem;}
-.footer-links a{font-size:13px;color:var(--text-muted);text-decoration:none;}
+footer{background:var(--black);border-top:1px solid var(--border);padding:48px 32px;}
+.footer-inner{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-brand{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);}
+.footer-brand span{color:var(--gold);}
+.footer-tagline{font-size:13px;color:var(--text-faint);margin-top:4px;}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap;}
+.footer-links a{font-size:13px;color:var(--text-muted);transition:color 0.2s;}
 .footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:12px;color:var(--text-faint);width:100%;margin-top:8px;}
 
-@media(max-width:768px){
+@media(max-width:900px){
+  .hero-inner,.deckbrief-layout,.studio-layout{grid-template-columns:1fr;gap:48px;}
+  .products-grid,.steps{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
   .nav-links{display:none;}
-  .agent-layout,.trading-layout{grid-template-columns:1fr;}
-  .hero-stats{gap:2rem;}
+  .hero h1{font-size:clamp(32px,7vw,48px);}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <div class="logo">
+    <a href="/" class="logo">
       <div class="logo-badge">NC</div>
-      <div class="logo-text">Nerd<span>Command</span>.info</div>
-    </div>
+      <div class="logo-text">Nerd<span>Command</span></div>
+    </a>
     <div class="nav-links">
-      <a href="#divisions">Divisions</a>
-      <a href="#agent">Business Agent</a>
-      <a href="#trading">Trading Brain</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#products">Products</a>
+      <a href="#how">How It Works</a>
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="studio.html">Studio</a>
     </div>
-    <a href="#cta" class="nav-cta">Get Started</a>
+    <a href="#lead" class="nav-cta">Get Early Access</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow">⚡ GangsterNerds LLC</div>
-    <h1>The <span>AI Command Center</span><br>Built Different.</h1>
-    <p class="hero-sub">For creators, it's an AI studio. For businesses, it's an AI command agent. For traders, it's an intelligence engine. One platform. Multiple divisions.</p>
-    <div class="hero-ctas">
-      <a href="#divisions" class="btn-primary">Explore Divisions</a>
-      <a href="#agent" class="btn-secondary">See the Business Agent</a>
-    </div>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Divisions</div>
+    <div>
+      <div class="hero-eyebrow">⚡ GangsterNerds LLC</div>
+      <h1>The <span>AI Command Center</span><br>Built Different.</h1>
+      <p class="hero-lede">Capture every lead. Draft every follow-up. Run an AI studio. Get your daily brief. One platform — built for creators and business owners who don't have time to babysit software.</p>
+      <div class="hero-btns">
+        <a href="#lead" class="btn-gold">Get Early Access — Free</a>
+        <a href="#products" class="btn-outline">See What We Build</a>
       </div>
-      <div class="stat">
-        <div class="stat-num">$300+</div>
-        <div class="stat-label">Monthly Trading Target</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">36.2M</div>
-        <div class="stat-label">U.S. SMBs We Serve</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">0ms</div>
-        <div class="stat-label">Missed Leads</div>
+      <div class="hero-proof">
+        <div class="proof-item">
+          <span class="proof-num">7 AM</span>
+          <span class="proof-label">Daily brief in your inbox</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">0ms</span>
+          <span class="proof-label">Missed leads</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">36M+</span>
+          <span class="proof-label">U.S. SMBs we're built for</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- DIVISIONS -->
-<section class="divisions" id="divisions">
-  <div class="section-inner">
-    <div class="section-tag">Our Divisions</div>
-    <h2 class="section-title">One Command. <span>Four Missions.</span></h2>
-    <p class="section-sub">NerdCommand operates across four focused divisions — each built to solve a real problem, powered by AI.</p>
-    <div class="divisions-grid">
-
-      <a href="#agent" class="division-card">
-        <div class="division-icon">🤖</div>
-        <div class="division-tag">Division 01</div>
-        <div class="division-name">Business Command Agent</div>
-        <div class="division-desc">Captures every website lead, drafts follow-ups, tracks deals, and sends you a daily business brief. Your business, under AI command.</div>
-        <div class="division-link">Learn more →</div>
-      </a>
-
-      <a href="#studio" class="division-card">
-        <div class="division-icon">🎨</div>
-        <div class="division-tag">Division 02</div>
-        <div class="division-name">AI Studio Suite</div>
-        <div class="division-desc">One workspace for creators, freelancers, and teams. Multi-model AI, projects, files, content calendars, and prompt tools — all in one place.</div>
-        <div class="division-link">Learn more →</div>
-      </a>
-
-      <a href="#trading" class="division-card">
-        <div class="division-icon">📈</div>
-        <div class="division-tag">Division 03</div>
-        <div class="division-name">NCI Trading Brain</div>
-        <div class="division-desc">Algorithmic trading intelligence. EMA/MACD signal engine, Tradier API integration, The Wheel strategy, and real-time risk management.</div>
-        <div class="division-link">Learn more →</div>
-      </a>
-
-      <a href="#managed" class="division-card">
-        <div class="division-icon">⚙️</div>
-        <div class="division-tag">Division 04</div>
-        <div class="division-name">Managed AI Builds</div>
-        <div class="division-desc">Custom AI automation systems for companies that need more. CRM integrations, dashboards, internal agents, and full workflow automation.</div>
-        <div class="division-link">Learn more →</div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<!-- BUSINESS AGENT -->
-<section class="agent-section" id="agent">
-  <div class="section-inner">
-    <div class="section-tag">Division 01</div>
-    <h2 class="section-title">Business <span>Command Agent</span></h2>
-    <p class="section-sub">Install an AI agent that captures every lead, drafts every follow-up, tracks every deal, and delivers your daily brief.</p>
-    <div class="agent-layout">
-      <div class="agent-features">
-        <div class="agent-feature">
-          <div class="agent-feature-icon">🎯</div>
-          <div class="agent-feature-text">
-            <h4>Website Lead Capture</h4>
-            <p>Every contact form submission captured, validated, deduplicated, and logged with source attribution — automatically.</p>
-          </div>
+    <div class="brief-card">
+      <div class="brief-label">Morning Brief — Today</div>
+      <div class="brief-rows">
+        <div class="brief-row">
+          <div class="bdot bdot-green"></div>
+          <span><strong>3 new leads</strong> captured from your site — 2 follow-ups drafted</span>
         </div>
-        <div class="agent-feature">
-          <div class="agent-feature-icon">✍️</div>
-          <div class="agent-feature-text">
-            <h4>AI Follow-Up Drafts</h4>
-            <p>Personalized follow-up emails drafted within minutes of lead capture. You approve, edit, or reject — then send.</p>
-          </div>
+        <div class="brief-row">
+          <div class="bdot bdot-gold"></div>
+          <span><strong>$42,500</strong> open pipeline — 1 deal stale &gt;5 days ⚠️</span>
         </div>
-        <div class="agent-feature">
-          <div class="agent-feature-icon">📊</div>
-          <div class="agent-feature-text">
-            <h4>Deal Tracking</h4>
-            <p>Stage, value, probability, and next actions tracked automatically. Stale deals flagged before they die.</p>
-          </div>
+        <div class="brief-row">
+          <div class="bdot bdot-blue"></div>
+          <span><strong>2 Studio exports</strong> ready — Reel + LinkedIn post queued</span>
         </div>
-        <div class="agent-feature">
-          <div class="agent-feature-icon">📋</div>
-          <div class="agent-feature-text">
-            <h4>Daily Business Brief</h4>
-            <p>Every morning: leads, deals, alerts, revenue signals, and recommendations — delivered to your inbox or Slack.</p>
-          </div>
+        <div class="brief-row">
+          <div class="bdot bdot-green"></div>
+          <span><strong>Site uptime 100%</strong> — Contact form healthy ✓</span>
         </div>
       </div>
-
-      <div class="agent-visual">
-        <div class="agent-visual-header">
-          <div class="agent-dot green"></div>
-          <div class="agent-dot amber"></div>
-          <div class="agent-visual-title">📋 NerdCommand Daily Brief — June 6, 2026</div>
-        </div>
-        <div class="brief-item">
-          <span class="brief-label">New Leads</span>
-          <span class="brief-val"><strong>3 captured</strong> — 2 follow-ups drafted &amp; awaiting approval</span>
-        </div>
-        <div class="brief-item">
-          <span class="brief-label">Pipeline</span>
-          <span class="brief-val"><strong>$42,500</strong> open value — 1 deal stale &gt;5 days ⚠️</span>
-        </div>
-        <div class="brief-item">
-          <span class="brief-label">Website</span>
-          <span class="brief-val"><strong>Uptime 100%</strong> — Contact form healthy ✓</span>
-        </div>
-        <div class="brief-item">
-          <span class="brief-label">Action</span>
-          <span class="brief-val">Follow up with <strong>Apex Marketing</strong> — last contact 6 days ago</span>
-        </div>
-        <div class="brief-item">
-          <span class="brief-label">Content</span>
-          <span class="brief-val">2 LinkedIn drafts ready — <strong>tap to approve</strong></span>
-        </div>
-        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid #222;display:flex;gap:10px;">
-          <div style="flex:1;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.25);border-radius:8px;padding:10px;text-align:center;font-size:13px;font-weight:700;color:#F5C518;cursor:pointer;">✓ Approve Drafts</div>
-          <div style="flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px;text-align:center;font-size:13px;font-weight:600;color:#888;cursor:pointer;">View Pipeline</div>
-        </div>
+      <div class="brief-time">Arrives 7:00 AM · Your timezone · Every day</div>
+      <div class="brief-actions">
+        <div class="baction">✓ Approve Follow-Ups</div>
+        <div class="baction baction-ghost">View Pipeline</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TRADING BRAIN -->
-<section class="trading-section" id="trading">
+<!-- PRODUCTS -->
+<section class="products" id="products">
   <div class="section-inner">
-    <div class="section-tag">Division 03</div>
-    <h2 class="section-title">NCI <span>Trading Brain</span></h2>
-    <p class="section-sub">Algorithmic trading intelligence built on a four-layer architecture. Signal generation, risk management, and live execution — all modular.</p>
-    <div class="trading-layout">
-      <div class="strategy-cards">
-        <div class="strategy-card">
-          <h4>The Wheel Strategy</h4>
-          <p>Sell Cash-Secured Puts at 0.25 delta (30 DTE). If assigned, sell Covered Calls at 0.30 delta. Roll before expiration.</p>
-          <span class="strategy-target">Target: $200–$400/month per $10k</span>
+    <div class="eyebrow">What we build</div>
+    <h2 class="section-h">Two Products. <span>One Command Center.</span></h2>
+    <p class="section-sub">NerdCommand runs two focused products built to solve real problems for small business owners and creators.</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-card-accent" style="background:var(--gold);"></div>
+        <div class="product-icon">🤖</div>
+        <div class="product-tag">Business Command Agent</div>
+        <div class="product-name">DeckBrief</div>
+        <div class="product-desc">AI captures your leads, drafts the follow-ups, tracks every deal, and sends you a crystal-clear morning brief — every single day. No dashboard to check. No lead left behind.</div>
+        <a href="deckbrief.html" class="product-link">See DeckBrief →</a>
+      </div>
+      <div class="product-card">
+        <div class="product-card-accent" style="background:var(--blue);"></div>
+        <div class="product-icon">🎬</div>
+        <div class="product-tag">AI Creative Suite</div>
+        <div class="product-name">NerdCommand Studio</div>
+        <div class="product-desc">Autonomous AI movie production. Write scripts, generate images, render videos, and assemble full cinematic cuts — all from one command. Built for the creator who refuses to be limited by tools.</div>
+        <a href="studio.html" class="product-link">See Studio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-h">Three Steps to <span>Full AI Command</span></h2>
+    <p class="section-sub">Set it up once. NerdCommand handles the rest while you focus on the work that actually moves the needle.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Connect your business</div>
+        <div class="step-body">Add one snippet to your site, connect your email, and tell us about your business. Takes 10 minutes. No engineers required.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Agent takes command</div>
+        <div class="step-body">Your NerdCommand agent captures every lead, enriches their profile, drafts a personalized follow-up, and updates your pipeline — automatically.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Brief arrives at 7 AM</div>
+        <div class="step-body">Every morning your brief lands in your inbox. New leads, deal statuses, actions needed — in plain English. No dashboards. No notifications. Just clarity.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECKBRIEF SECTION -->
+<section class="deckbrief-section" id="deckbrief">
+  <div class="section-inner">
+    <div class="eyebrow">DeckBrief — Business Command Agent</div>
+    <h2 class="section-h">Your Business, <span>Briefed Daily.</span></h2>
+    <p class="section-sub">Most small business owners lose more leads to slow follow-up than they ever lose to competition. DeckBrief closes that gap.</p>
+    <div class="deckbrief-layout">
+      <div class="db-features">
+        <div class="db-feature">
+          <div class="db-icon">🎯</div>
+          <div>
+            <div class="db-title">Lead Capture &amp; Enrichment</div>
+            <div class="db-desc">Every website visitor who takes action gets captured, enriched with company data, and qualified — automatically. Zero manual data entry.</div>
+          </div>
         </div>
-        <div class="strategy-card">
-          <h4>High-Yield Income ETFs</h4>
-          <p>YMAX weekly distributions with DRIP enabled. DGRO for lower yield + NAV appreciation in accumulation phase.</p>
-          <span class="strategy-target">Target: Passive income compounding</span>
+        <div class="db-feature">
+          <div class="db-icon">✍️</div>
+          <div>
+            <div class="db-title">AI Follow-Up Drafts</div>
+            <div class="db-desc">AI drafts a personalized, human-sounding reply to every new lead within minutes. You review, hit send, and move on.</div>
+          </div>
         </div>
-        <div class="strategy-card">
-          <h4>Impulse Signal Engine</h4>
-          <p>EMA-13/26 crossover + MACD histogram confirmation. BUY when EMA rising + histogram positive. Full paper-trading validation.</p>
-          <span class="strategy-target">Built on: Tradier API + Python</span>
+        <div class="db-feature">
+          <div class="db-icon">📊</div>
+          <div>
+            <div class="db-title">Deal Pipeline Tracking</div>
+            <div class="db-desc">Every opportunity moves through your pipeline automatically. Stale deals get flagged before they die. No CRM to babysit.</div>
+          </div>
         </div>
-        <div class="strategy-card">
-          <h4>Carry Trade Macro Overlay</h4>
-          <p>JPY/USD monitoring for yen unwinding signals. Rising yen = broad market selloff risk overlay on SPY options positions.</p>
-          <span class="strategy-target">Risk Gate: Non-negotiable</span>
+        <div class="db-feature">
+          <div class="db-icon">📋</div>
+          <div>
+            <div class="db-title">7 AM Daily Brief</div>
+            <div class="db-desc">A plain-English briefing lands in your inbox every morning. Leads, deals, actions — no dashboard required.</div>
+          </div>
         </div>
       </div>
       <div>
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:2rem;">
-          <div style="font-size:12px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.5rem;">System Architecture</div>
-          <div style="display:flex;flex-direction:column;gap:1rem;">
-            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;"></div>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--white);">Data Layer</div>
-                <div style="font-size:12px;color:var(--text-muted);">Tradier API • TradingView • Real-time feeds</div>
-              </div>
-            </div>
-            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--white);">Analysis Layer</div>
-                <div style="font-size:12px;color:var(--text-muted);">EMA • MACD • ML Models • Filters</div>
-              </div>
-            </div>
-            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0;"></div>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--white);">Execution Layer</div>
-                <div style="font-size:12px;color:var(--text-muted);">Order Router • Position Tracker • Risk Gates</div>
-              </div>
-            </div>
-            <div style="background:var(--surface3);border-radius:10px;padding:1rem;display:flex;gap:12px;align-items:center;">
-              <div style="width:8px;height:8px;border-radius:50%;background:#a855f7;flex-shrink:0;"></div>
-              <div>
-                <div style="font-size:14px;font-weight:700;color:var(--white);">Monitoring Layer</div>
-                <div style="font-size:12px;color:var(--text-muted);">Dashboard • P&L Tracker • Alerts • Logs</div>
-              </div>
-            </div>
+        <div class="brief-card" style="background:var(--surface2);">
+          <div class="brief-label">58% stat you need to know</div>
+          <div style="font-family:'Fraunces',serif;font-size:64px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:12px;">58%</div>
+          <div style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">of U.S. small businesses used generative AI in 2025. Up from 23% in 2023. The ones who moved fast are the ones winning.</div>
+          <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px;">THE GAP THAT KILLS DEALS</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.65;">Businesses who respond to a new lead within <strong style="color:var(--text);">5 minutes</strong> are <strong style="color:var(--text);">100× more likely to convert</strong>. The average small business response time? <strong style="color:var(--gold);">47 hours.</strong></div>
           </div>
-          <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Build Progress</div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Tradier API</span><span style="color:var(--gold);">60%</span></div>
-                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:60%;height:100%;background:var(--gold);border-radius:4px;"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Data Pipeline</span><span style="color:var(--gold);">40%</span></div>
-                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:40%;height:100%;background:var(--gold);border-radius:4px;"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--text-muted);">Signal Engine</span><span style="color:var(--text-muted);">Planned</span></div>
-                <div style="background:#1a1a1a;border-radius:4px;height:4px;"><div style="width:5%;height:100%;background:#333;border-radius:4px;"></div></div>
-              </div>
-            </div>
-          </div>
+          <a href="deckbrief.html" class="btn-gold" style="display:block;text-align:center;">Get DeckBrief — Close the Gap →</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="pricing-section" id="pricing">
+<!-- STUDIO SECTION -->
+<section class="studio-section" id="studio">
   <div class="section-inner">
-    <div class="section-tag">Pricing</div>
-    <h2 class="section-title">Command Your <span>Budget.</span></h2>
-    <p class="section-sub">From self-serve creators to fully-managed business agents. Pick the plan that fits your mission.</p>
-    <div class="pricing-grid" style="margin-top:3.5rem;">
-
-      <div class="pricing-card">
-        <div class="price-name">Creator</div>
-        <div class="price-amount">$19<span>.97/mo</span></div>
-        <hr class="price-divider">
-        <ul class="price-features">
-          <li>Multi-model AI workspace</li>
-          <li>Projects &amp; file uploads</li>
-          <li>Content templates</li>
-          <li>Monthly usage credits</li>
-        </ul>
-        <a href="#cta" class="price-btn outline">Start Free Trial</a>
+    <div class="eyebrow">NerdCommand Studio — AI Creative Suite</div>
+    <h2 class="section-h">Make Movies. <span>Build Worlds.</span><br>Ship Content.</h2>
+    <p class="section-sub">Autonomous AI production pipeline. From script to screen — images, video, music, voice, and final cut — all from one command.</p>
+    <div class="studio-layout">
+      <div class="studio-features-list">
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Script to Screen Pipeline</strong> — Write a script, Studio renders the full cinematic sequence automatically</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Multi-Model AI</strong> — Claude, Wan2.2, ComfyUI, CogView integrated in one orchestrated workflow</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Character Consistency Engine</strong> — Your characters look the same in every shot, every scene</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Cinematic Grade Presets</strong> — CINEMATIC, NOIR, FLASHBACK, WARM, COOL — one flag, full color grade</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Trailer &amp; Feature Cuts</strong> — Auto-assembled from shots with sync-to-beat audio and title cards</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Social Content Engine</strong> — Reels, TikToks, and LinkedIn posts cut from your studio output automatically</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>NerdCommand Universes</strong> — Exodus Horizon Legacy, Blood Relic, Hero's Open Source and more</div></div>
       </div>
-
-      <div class="pricing-card">
-        <div class="price-name">Pro Studio</div>
-        <div class="price-amount">$49<span>/mo</span></div>
-        <hr class="price-divider">
-        <ul class="price-features">
-          <li>Everything in Creator</li>
-          <li>Premium model access</li>
-          <li>Content calendar workflows</li>
-          <li>Analytics dashboard</li>
-        </ul>
-        <a href="#cta" class="price-btn outline">Start Free Trial</a>
-      </div>
-
-      <div class="pricing-card featured">
-        <div class="featured-badge">⚡ Most Popular</div>
-        <div class="price-name">Starter Command Agent</div>
-        <div class="price-amount">$499<span>/mo</span></div>
-        <div class="price-setup">+ $1,500 one-time setup</div>
-        <hr class="price-divider">
-        <ul class="price-features">
-          <li>Lead capture &amp; webhook</li>
-          <li>AI follow-up drafts</li>
-          <li>Deal tracker</li>
-          <li>Daily business brief</li>
-          <li>Website health monitor</li>
-          <li>Human approval workflow</li>
-        </ul>
-        <a href="#cta" class="price-btn solid">Book a Free Audit</a>
-      </div>
-
-      <div class="pricing-card">
-        <div class="price-name">Growth Command Agent</div>
-        <div class="price-amount">$1,500<span>/mo</span></div>
-        <div class="price-setup">+ $5,000 one-time setup</div>
-        <hr class="price-divider">
-        <ul class="price-features">
-          <li>CRM integration</li>
-          <li>Lead scoring</li>
-          <li>Pipeline reporting</li>
-          <li>Weekly optimization</li>
-          <li>Reminders &amp; stale deal alerts</li>
-        </ul>
-        <a href="#cta" class="price-btn outline">Book a Free Audit</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="cta">
-  <div class="section-inner">
-    <div class="cta-box">
-      <div class="section-tag" style="margin-bottom:1.5rem;">Free AI Command Audit</div>
-      <h2>We'll Find 5 Workflows<br><span style="color:var(--gold);">You Can Automate This Week.</span></h2>
-      <p>We identify 5 automation opportunities in your business, then install the first one free if you move forward. No pressure. Real value.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="mailto:hello@nerdcommand.info" class="btn-primary">Book Your Free Audit</a>
-        <a href="#divisions" class="btn-secondary">Explore Divisions</a>
+      <div class="studio-visual">
+        <div class="studio-tabs">
+          <div class="stab active">Script</div>
+          <div class="stab">Render</div>
+          <div class="stab">Export</div>
+        </div>
+        <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">▶ NCI Studio — Scene Assembly</div>
+          <div style="font-size:12px;color:#3ECF8E;font-family:monospace;line-height:1.8;">&gt; Parsing shot bible... 12 scenes detected<br>&gt; Generating scene_001.mp4 [CINEMATIC grade]<br>&gt; Rendering title card — Exodus Horizon Legacy<br>&gt; Audio sync: orbital_theme_v2.mp3<br>&gt; Encoding final cut at 1280×720...<br><span style="color:var(--gold);">&gt; ✓ exodus_horizon_trailer_v3.mp4 — DONE</span></div>
+        </div>
+        <a href="studio.html" class="btn-gold" style="display:block;text-align:center;">Explore NerdCommand Studio →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- LEAD FORM -->
+<section class="lead-section" id="lead">
+  <div class="section-inner">
+    <div class="lead-inner">
+      <div class="eyebrow" style="text-align:center;">Get Early Access</div>
+      <h2 class="section-h">Command Your Business.<br><span>Start Free.</span></h2>
+      <p class="section-sub">Tell us about your business and we'll set up your NerdCommand agent — DeckBrief, Studio, or both. Early access members get first priority and locked-in pricing.</p>
+
+      <form class="lead-form" id="leadForm"
+            action="https://formspree.io/f/xpwzogwn"
+            method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="first_name" placeholder="Michael" required>
+          </div>
+          <div class="form-field">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="last_name" placeholder="Chapman" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@yourbusiness.com" required>
+        </div>
+        <div class="form-field">
+          <label for="biz">Business Name</label>
+          <input type="text" id="biz" name="business_name" placeholder="Your Business">
+        </div>
+        <div class="form-field">
+          <label for="interest">What are you most interested in?</label>
+          <select id="interest" name="interest">
+            <option value="">Select one...</option>
+            <option value="deckbrief">DeckBrief — Lead capture &amp; daily brief</option>
+            <option value="studio">NerdCommand Studio — AI creative suite</option>
+            <option value="both">Both — I want the full command center</option>
+            <option value="custom">Custom AI build for my business</option>
+          </select>
+        </div>
+        <input type="hidden" name="_subject" value="New NerdCommand Lead">
+        <input type="hidden" name="_next" value="https://chapmancapital1.github.io/nerdcommand-site/?thanks=1">
+        <button type="submit" class="form-submit">Get Early Access — It's Free</button>
+        <p class="form-note">No credit card. No spam. We'll reach out within 24 hours.</p>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <h3>⚡ You're in the command center.</h3>
+        <p>We'll be in touch within 24 hours to get your NerdCommand agent set up. Check your inbox — including spam just in case.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-inner" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:center;">
+  <div class="footer-inner">
     <div>
-      <div class="footer-logo">Nerd<span>Command</span>.info</div>
-      <div class="footer-copy" style="margin-top:4px;">© 2026 GangsterNerds LLC. All rights reserved.</div>
+      <div class="footer-brand">Nerd<span>Command</span></div>
+      <div class="footer-tagline">AI Command Center — Built by GangsterNerds LLC</div>
     </div>
     <div class="footer-links">
-      <a href="#divisions">Divisions</a>
-      <a href="#agent">Business Agent</a>
-      <a href="#trading">Trading Brain</a>
-      <a href="#pricing">Pricing</a>
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="studio.html">Studio</a>
+      <a href="#lead">Get Access</a>
+      <a href="mailto:hello@nerdcommand.info">Contact</a>
     </div>
+    <div class="footer-copy">© 2026 GangsterNerds LLC. All rights reserved.</div>
   </div>
 </footer>
 
 <script>
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+// Form AJAX submit
+const form = document.getElementById('leadForm');
+const success = document.getElementById('formSuccess');
+if(form){
+  form.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try{
+      const res = await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(res.ok){
+        form.style.display='none';
+        success.style.display='block';
+      } else {
+        btn.textContent = 'Try Again';
+        btn.disabled = false;
+      }
+    }catch(err){
+      btn.textContent = 'Try Again';
+      btn.disabled = false;
+    }
+  });
+}
+
+// Show success if redirected back with ?thanks=1
+if(window.location.search.includes('thanks=1')){
+  if(form) form.style.display='none';
+  if(success) success.style.display='block';
+}
+
+// Studio tabs (cosmetic)
+document.querySelectorAll('.stab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
   });
 });
 </script>
