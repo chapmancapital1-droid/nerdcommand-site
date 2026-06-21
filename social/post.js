@@ -25,12 +25,20 @@ if (!API_KEY || !API_SECRET || !ACCESS_TOKEN || !ACCESS_SECRET) {
 
 const posts = JSON.parse(fs.readFileSync(path.join(__dirname, 'posts.json'), 'utf8'));
 
-// Rotate category by day: Mon/Thu = studio, Tue/Fri = deckbrief, Wed/Sat = nerdcommand, Sun = random
+// Rotate category by day of week across all 4 brands
 function pickCategory() {
   const arg = process.argv[2];
   if (arg && posts[arg]) return arg;
   const day = new Date().getDay(); // 0=Sun, 1=Mon...
-  const map = { 0: 'nerdcommand', 1: 'studio', 2: 'deckbrief', 3: 'nerdcommand', 4: 'studio', 5: 'deckbrief', 6: 'nerdcommand' };
+  const map = {
+    0: 'nerdcommand',
+    1: 'studio',
+    2: 'deckbrief',
+    3: 'nerdcommand_ai',
+    4: 'studio',
+    5: 'deckbrief',
+    6: 'nerdcommand_ai'
+  };
   return map[day];
 }
 
