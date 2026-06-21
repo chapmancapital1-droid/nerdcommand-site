@@ -2,14 +2,14 @@
   "project": "nerdcommand-site",
   "organization": "GangsterNerds LLC",
   "github": {
-    "owner": "chapmancapital1",
+    "owner": "chapmancapital1-droid",
     "repo": "nerdcommand-site",
     "branch": "main",
     "primary_file": "index.html"
   },
   "site": {
-    "live_url": "https://chapmancapital1.github.io/nerdcommand-site/",
-    "custom_domain": "nerdcommand.info",
+    "live_url": "https://chapmancapital1-droid.github.io/nerdcommand-site/",
+    "custom_domain": "nerdcommand.com",
     "custom_domain_wired": false,
     "contact_email": "hello@nerdcommand.info"
   },
@@ -20,12 +20,9 @@
     "alert_threshold_ms": 3000,
     "log_file": "monitor_log.json"
   },
-  "sections": {
-    "hero": "class=\"hero\"",
-    "divisions": "id=\"divisions\"",
-    "agent": "id=\"agent\"",
-    "trading": "id=\"trading\"",
-    "pricing": "id=\"pricing\"",
-    "cta": "id=\"cta\""
+  "pages": {
+    "home": "index.html",
+    "studio": "studio.html",
+    "deckbrief": "deckbrief.html"
   }
 }
