@@ -1,6 +1,13 @@
 # Runtime monitor data — not part of the published site
 monitor_log.json
 
+# Node dependencies
+node_modules/
+deckbrief-api/node_modules/
+
+# Local env files
+deckbrief-api/.env
+
 # OS / editor cruft
 Thumbs.db
 desktop.ini

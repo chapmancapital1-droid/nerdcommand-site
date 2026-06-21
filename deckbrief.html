@@ -451,6 +451,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
+const DECKBRIEF_API = 'https://deckbrief-api.up.railway.app';
 const form=document.getElementById('deckbriefForm');
 const success=document.getElementById('deckbriefSuccess');
 if(form){
@@ -458,8 +459,20 @@ if(form){
     e.preventDefault();
     const btn=form.querySelector('.form-submit');
     btn.textContent='Sending...';btn.disabled=true;
+    const data={
+      first_name:form.first_name.value.trim(),
+      last_name:form.last_name.value.trim(),
+      email:form.email.value.trim(),
+      business_name:form.business_name?.value?.trim()||'',
+      lead_volume:form.lead_volume?.value||'',
+      source:'deckbrief-page'
+    };
     try{
-      const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      const res=await fetch(`${DECKBRIEF_API}/api/leads`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(data)
+      });
       if(res.ok){form.style.display='none';success.style.display='block';}
       else{btn.textContent='Try Again';btn.disabled=false;}
     }catch(err){btn.textContent='Try Again';btn.disabled=false;}
