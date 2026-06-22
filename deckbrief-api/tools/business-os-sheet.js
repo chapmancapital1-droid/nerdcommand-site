@@ -7,10 +7,14 @@
  * 3. Set your DECKBRIEF_API_URL and DECKBRIEF_API_KEY constants below
  * 4. Run buildBusinessOS() once to generate all tabs
  * 5. Run refreshData() on a daily trigger to keep it live
+ *
+ * DECKBRIEF_API_KEY is your account's admin_key (starts with "dbk_") — it
+ * scopes this sheet to ONLY your leads. NerdCommand issues it when your
+ * account is created. Do not share it; anyone with it can see your pipeline.
  */
 
 const DECKBRIEF_API_URL = 'https://deckbrief-api.up.railway.app';
-const DECKBRIEF_API_KEY = 'YOUR_API_SECRET_KEY_HERE';
+const DECKBRIEF_API_KEY = 'YOUR_ACCOUNT_ADMIN_KEY_HERE';
 
 // ── Main entry: build the entire Business OS ─────────────────────────────────
 

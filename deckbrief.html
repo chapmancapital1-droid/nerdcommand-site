@@ -465,7 +465,8 @@ if(form){
       email:form.email.value.trim(),
       business_name:form.business_name?.value?.trim()||'',
       lead_volume:form.lead_volume?.value||'',
-      source:'deckbrief-page'
+      source:'deckbrief-page',
+      account_key:'deckbrief-default'
     };
     try{
       const res=await fetch(`${DECKBRIEF_API}/api/leads`,{

@@ -26,6 +26,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOSt
 app.use('/api/leads', require('./routes/leads'));
 app.use('/api', require('./routes/pipeline'));
 app.use('/api/ceo', require('./routes/ceo'));
+app.use('/api/admin', require('./routes/admin'));
 
 app.use((err, req, res, next) => {
   console.error('[error]', err.message);

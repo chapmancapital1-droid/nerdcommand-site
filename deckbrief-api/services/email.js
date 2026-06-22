@@ -8,7 +8,8 @@ function getResend() {
 const FROM = 'DeckBrief <noreply@nerdcommand.info>';
 const OWNER = process.env.BRIEF_RECIPIENT_EMAIL || 'chapmancapital1@gmail.com';
 
-async function sendDraftNotification(lead, draft) {
+async function sendDraftNotification(lead, draft, recipient) {
+  const to = recipient || OWNER;
   const lines = draft.split('\n');
   const subjectLine = lines.find(l => l.startsWith('Subject:')) || 'Subject: New Lead Follow-Up';
   const subject = subjectLine.replace('Subject:', '').trim();
@@ -16,7 +17,7 @@ async function sendDraftNotification(lead, draft) {
 
   await getResend().emails.send({
     from: FROM,
-    to: OWNER,
+    to,
     subject: `[DeckBrief] New lead: ${lead.first_name} ${lead.last_name} — draft ready`,
     html: `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
@@ -45,11 +46,12 @@ async function sendDraftNotification(lead, draft) {
   });
 }
 
-async function sendDailyBrief(briefHtml, briefText, date) {
+async function sendDailyBrief(briefHtml, briefText, date, recipient) {
+  const to = recipient || OWNER;
   const dateStr = new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   await getResend().emails.send({
     from: FROM,
-    to: OWNER,
+    to,
     subject: `DeckBrief — ${dateStr}`,
     html: `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">

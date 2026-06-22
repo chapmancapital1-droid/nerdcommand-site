@@ -1,35 +1,34 @@
 const router = require('express').Router();
-const { leads: leadQ, events } = require('../db/queries');
+const { leads: leadQ, events, accounts } = require('../db/queries');
 const { generateFollowUpDraft } = require('../services/ai');
 const { sendDraftNotification } = require('../services/email');
+const { requireAuth, resolveIntake } = require('../middleware/auth');
 
-function auth(req, res, next) {
-  const key = (req.headers.authorization || '').replace('Bearer ', '');
-  if (key !== process.env.API_SECRET_KEY) return res.status(401).json({ error: 'Unauthorized' });
-  next();
-}
-
-// Public — receives form submission
-router.post('/', async (req, res) => {
+// Public — receives form submission. resolveIntake maps the public account_key
+// (or the default) to an account_id before the lead is stored.
+router.post('/', resolveIntake, async (req, res) => {
   const { first_name, last_name, email, business_name, lead_volume, source } = req.body;
   if (!first_name || !last_name || !email) {
     return res.status(400).json({ error: 'first_name, last_name, and email are required' });
   }
 
   try {
-    const { rows } = await leadQ.upsert({ first_name, last_name, email, business_name, lead_volume, source: source || 'deckbrief-page' });
+    const { rows } = await leadQ.upsert(req.intakeAccountId, {
+      first_name, last_name, email, business_name, lead_volume,
+      source: source || 'deckbrief-page',
+    });
     const lead = rows[0];
 
     await events.insert(lead.id, 'status_change', null, 'new');
 
-    // Generate draft and notify — non-blocking
     if (process.env.ANTHROPIC_API_KEY && process.env.RESEND_API_KEY) {
       setImmediate(async () => {
         try {
           const draft = await generateFollowUpDraft(lead);
           await leadQ.setDraft(lead.id, draft);
           await events.insert(lead.id, 'draft_generated', null, 'generated');
-          await sendDraftNotification(lead, draft);
+          const { rows: acctRows } = await accounts.getById(lead.account_id);
+          await sendDraftNotification(lead, draft, acctRows[0]?.email);
         } catch (err) {
           console.error('[leads] draft/notify error:', err.message);
         }
@@ -43,20 +42,20 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Protected — list all leads
-router.get('/', auth, async (req, res) => {
+// Protected — list leads scoped to the caller's account (master sees all)
+router.get('/', requireAuth, async (req, res) => {
   try {
-    const { rows } = await leadQ.getAll();
+    const { rows } = await leadQ.getAll(req.account.id);
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Protected — get single lead with event timeline
-router.get('/:id', auth, async (req, res) => {
+// Protected — single lead with timeline, account-checked
+router.get('/:id', requireAuth, async (req, res) => {
   try {
-    const { rows } = await leadQ.getById(req.params.id);
+    const { rows } = await leadQ.getById(req.params.id, req.account.id);
     if (!rows.length) return res.status(404).json({ error: 'Lead not found' });
     res.json(rows[0]);
   } catch (err) {
@@ -64,10 +63,10 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// Protected — update status or notes
-router.patch('/:id', auth, async (req, res) => {
+// Protected — update status or notes (account-checked via getById)
+router.patch('/:id', requireAuth, async (req, res) => {
   try {
-    const { rows: current } = await leadQ.getById(req.params.id);
+    const { rows: current } = await leadQ.getById(req.params.id, req.account.id);
     if (!current.length) return res.status(404).json({ error: 'Lead not found' });
 
     const { rows } = await leadQ.update(req.params.id, req.body);
@@ -86,10 +85,10 @@ router.patch('/:id', auth, async (req, res) => {
   }
 });
 
-// Protected — regenerate AI draft
-router.post('/:id/draft', auth, async (req, res) => {
+// Protected — regenerate AI draft (account-checked)
+router.post('/:id/draft', requireAuth, async (req, res) => {
   try {
-    const { rows } = await leadQ.getById(req.params.id);
+    const { rows } = await leadQ.getById(req.params.id, req.account.id);
     if (!rows.length) return res.status(404).json({ error: 'Lead not found' });
 
     const draft = await generateFollowUpDraft(rows[0]);
