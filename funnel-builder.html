@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeckBrief — Funnel Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F5A623;--dark:#0A0A0E;--surface:#111116;--surface2:#18181F;--surface3:#1F1F27;--border:rgba(245,166,35,0.15);--text:#F4F0E8;--muted:rgba(244,240,232,0.55);--faint:rgba(244,240,232,0.28);--green:#22C55E;--red:#EF4444;--blue:#60A5FA}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--dark);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50}
+.logo{font-family:'Fraunces',serif;font-size:19px;font-weight:900;color:var(--gold)}
+.logo span{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--muted);margin-left:8px}
+.tb-actions{display:flex;gap:10px;align-items:center}
+button{font-family:'Inter',sans-serif;cursor:pointer;border-radius:8px;font-weight:600;font-size:13px;border:1px solid var(--border);background:transparent;color:var(--text);padding:8px 15px;transition:all .15s}
+button:hover{border-color:var(--gold)}
+.btn-gold{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.btn-gold:hover{opacity:.9}
+.btn-green{background:var(--green);color:#04170c;border-color:var(--green)}
+.ghost{color:var(--muted);border-color:transparent}
+.layout{display:grid;grid-template-columns:200px 1fr 300px;height:calc(100vh - 57px)}
+.panel{overflow-y:auto;padding:18px}
+.left{border-right:1px solid var(--border);background:var(--surface)}
+.right{border-left:1px solid var(--border);background:var(--surface)}
+.canvas{background:var(--dark);padding:32px}
+.canvas-inner{max-width:560px;margin:0 auto;background:var(--surface2);border:1px solid var(--border);border-radius:14px;min-height:400px;padding:20px}
+.plabel{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.lib-item{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+.lib-item:hover{border-color:var(--gold);background:var(--surface3)}
+.lib-item .ic{font-size:16px}
+.blk{background:var(--surface3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;position:relative}
+.blk.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.blk-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.blk-type{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.blk-ctrls{display:flex;gap:4px}
+.blk-ctrls button{padding:2px 7px;font-size:12px;border-color:transparent;color:var(--muted)}
+.blk-preview{font-size:13px;color:var(--muted);word-break:break-word}
+.blk-preview h4{color:var(--text);font-size:16px;font-weight:700;margin-bottom:3px}
+.blk-preview img{max-width:100%;border-radius:6px;margin-top:4px}
+.empty{text-align:center;color:var(--faint);padding:50px 20px;font-size:13px}
+label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 5px}
+input,select,textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk{display:flex;align-items:center;gap:8px;margin-top:10px}
+.chk input{width:auto}
+.funnel-list-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.fli-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.fli-name{font-size:15px;font-weight:700}
+.pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px}
+.pill-draft{background:rgba(244,240,232,0.1);color:var(--muted)}
+.pill-published{background:rgba(34,197,94,0.15);color:var(--green)}
+.fli-stats{display:flex;gap:18px;font-size:12px;color:var(--muted);margin-bottom:12px}
+.fli-stats b{color:var(--text)}
+.fli-actions{display:flex;gap:8px;flex-wrap:wrap}
+.center{display:flex;align-items:center;justify-content:center;min-height:70vh}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:36px;width:360px}
+.card h2{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--gold);margin-bottom:6px;text-align:center}
+.card p{color:var(--muted);font-size:13px;margin-bottom:22px;text-align:center}
+.spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+.url-box{background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:11px;color:var(--blue);font-family:monospace;margin-top:6px;word-break:break-all}
+.steps-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.step-tab{padding:5px 11px;border-radius:7px;font-size:12px;background:var(--surface2);border:1px solid var(--border)}
+.step-tab.active{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.mini{font-size:11px;color:var(--faint);margin-top:4px}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth" class="center">
+  <div class="card">
+    <h2>DeckBrief</h2>
+    <p>Funnel Builder — enter your account key</p>
+    <input id="key" type="password" placeholder="Account admin key (dbk_…)">
+    <button class="btn-gold" style="width:100%;margin-top:14px" onclick="unlock()">Enter</button>
+    <p id="autherr" style="color:var(--red);margin-top:10px;display:none">Invalid key</p>
+  </div>
+</div>
+
+<!-- LIST VIEW -->
+<div id="listView" class="hidden">
+  <div class="topbar">
+    <div class="logo">DeckBrief <span>Funnel Builder</span></div>
+    <div class="tb-actions">
+      <input id="newName" placeholder="New funnel name" style="width:180px">
+      <select id="newType" style="width:120px"><option value="single">Single page</option><option value="multistep">Multi-step</option></select>
+      <button class="btn-gold" onclick="createFunnel()">+ Create</button>
+    </div>
+  </div>
+  <div class="panel" style="max-width:760px;margin:0 auto">
+    <div id="funnelList"></div>
+  </div>
+</div>
+
+<!-- BUILDER VIEW -->
+<div id="builderView" class="hidden">
+  <div class="topbar">
+    <div class="logo">DeckBrief <span id="bName">Funnel</span></div>
+    <div class="tb-actions">
+      <button class="ghost" onclick="backToList()">← All funnels</button>
+      <button onclick="toggleTheme()">Theme</button>
+      <button class="btn-gold" onclick="saveFunnel()">Save</button>
+      <button id="pubBtn" class="btn-green" onclick="togglePublish()">Publish</button>
+    </div>
+  </div>
+  <div class="layout">
+    <div class="panel left">
+      <div class="plabel">Add Block</div>
+      <div class="lib-item" onclick="addBlock('text')"><span class="ic">📝</span> Text</div>
+      <div class="lib-item" onclick="addBlock('image')"><span class="ic">🖼️</span> Image</div>
+      <div class="lib-item" onclick="addBlock('video')"><span class="ic">🎬</span> Video</div>
+      <div class="lib-item" onclick="addBlock('audio')"><span class="ic">🔊</span> Audio</div>
+      <div class="lib-item" onclick="addBlock('cta')"><span class="ic">🎯</span> CTA Form</div>
+
+      <div class="plabel" style="margin-top:24px">Steps</div>
+      <div id="stepsBar" class="steps-bar"></div>
+      <button class="ghost" style="font-size:12px;padding:5px 0" onclick="addStep()">+ Add step</button>
+
+      <div id="themePanel" class="hidden">
+        <div class="plabel" style="margin-top:24px">Theme</div>
+        <label>Background</label><input type="color" id="th_bg" onchange="updTheme()">
+        <label>Text</label><input type="color" id="th_text" onchange="updTheme()">
+        <label>Accent</label><input type="color" id="th_accent" onchange="updTheme()">
+        <label>Button</label><input type="color" id="th_btn" onchange="updTheme()">
+        <label>Button text</label><input type="color" id="th_btnText" onchange="updTheme()">
+      </div>
+    </div>
+
+    <div class="panel canvas">
+      <div class="canvas-inner" id="canvas"></div>
+      <div id="pubUrls"></div>
+    </div>
+
+    <div class="panel right">
+      <div class="plabel">Block Settings</div>
+      <div id="settings"><div class="empty" style="padding:30px 0">Select a block to edit</div></div>
+      <div class="plabel" style="margin-top:26px">Funnel</div>
+      <label>Thank-you message</label>
+      <textarea id="thanksMsg" rows="2" onchange="markDirty()"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://deckbrief-api.up.railway.app';
+let KEY='', funnels=[], cur=null, curStep=0, selBlock=null, dirty=false;
+
+function h(){ return {Authorization:`Bearer ${KEY}`,'Content-Type':'application/json'}; }
+function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+async function unlock(){
+  KEY = document.getElementById('key').value.trim();
+  try{
+    const r = await fetch(`${API}/api/funnels`,{headers:h()});
+    if(!r.ok) throw 0;
+    sessionStorage.setItem('dbfkey',KEY);
+    document.getElementById('auth').classList.add('hidden');
+    document.getElementById('listView').classList.remove('hidden');
+    funnels = await r.json(); renderList();
+  }catch(e){ document.getElementById('autherr').style.display='block'; }
+}
+document.getElementById('key').addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
+const saved = sessionStorage.getItem('dbfkey');
+if(saved){ document.getElementById('key').value=saved; unlock(); }
+
+function renderList(){
+  const el = document.getElementById('funnelList');
+  if(!funnels.length){ el.innerHTML='<div class="empty">No funnels yet. Create one above.</div>'; return; }
+  el.innerHTML = funnels.map(f=>`
+    <div class="funnel-list-item">
+      <div class="fli-top">
+        <div><div class="fli-name">${esc(f.name)}</div><div class="mini">/${esc(f.slug)} · ${f.type}</div></div>
+        <span class="pill pill-${f.status}">${f.status.toUpperCase()}</span>
+      </div>
+      <div class="fli-stats"><span><b>${f.views}</b> views</span><span><b>${f.submissions}</b> leads</span><span><b>${f.views>0?Math.round(f.submissions/f.views*100):0}%</b> conv</span></div>
+      <div class="fli-actions">
+        <button class="btn-gold" onclick="editFunnel('${f.id}')">Edit</button>
+        <button onclick="delFunnel('${f.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+async function createFunnel(){
+  const name = document.getElementById('newName').value.trim();
+  if(!name) return alert('Enter a name');
+  const type = document.getElementById('newType').value;
+  const r = await fetch(`${API}/api/funnels`,{method:'POST',headers:h(),body:JSON.stringify({name,type})});
+  if(r.ok){ document.getElementById('newName').value=''; funnels.unshift(await r.json()); renderList(); }
+  else alert('Create failed');
+}
+
+async function delFunnel(id){
+  if(!confirm('Delete this funnel?')) return;
+  await fetch(`${API}/api/funnels/${id}`,{method:'DELETE',headers:h()});
+  funnels = funnels.filter(f=>f.id!==id); renderList();
+}
+
+async function editFunnel(id){
+  const r = await fetch(`${API}/api/funnels/${id}`,{headers:h()});
+  cur = await r.json();
+  cur.steps = (cur.steps||[]).sort((a,b)=>a.step_order-b.step_order);
+  if(!cur.steps.length) cur.steps=[{blocks:[],title:'Step 1',cta_button_text:'Submit',_new:true}];
+  curStep=0; selBlock=null; dirty=false;
+  document.getElementById('listView').classList.add('hidden');
+  document.getElementById('builderView').classList.remove('hidden');
+  document.getElementById('bName').textContent = cur.name;
+  document.getElementById('thanksMsg').value = cur.thank_you_message||'';
+  loadThemeInputs();
+  renderBuilder();
+}
+
+function backToList(){
+  document.getElementById('builderView').classList.add('hidden');
+  document.getElementById('listView').classList.remove('hidden');
+  fetch(`${API}/api/funnels`,{headers:h()}).then(r=>r.json()).then(f=>{funnels=f;renderList();});
+}
+
+function markDirty(){ dirty=true; }
+
+function renderBuilder(){
+  // steps bar
+  document.getElementById('stepsBar').innerHTML = cur.steps.map((s,i)=>
+    `<span class="step-tab ${i===curStep?'active':''}" onclick="gotoStep(${i})">${i+1}</span>`).join('') +
+    (cur.steps.length>1?`<span class="step-tab" onclick="delStep(${curStep})" style="color:var(--red)">✕</span>`:'');
+  // canvas
+  const step = cur.steps[curStep];
+  const c = document.getElementById('canvas');
+  if(!step.blocks.length){ c.innerHTML='<div class="empty">Add blocks from the left panel</div>'; }
+  else c.innerHTML = step.blocks.map((b,i)=>blockCard(b,i)).join('');
+  renderSettings();
+  renderPubUrls();
+}
+
+function blockCard(b,i){
+  const cfg=b.config||{}; let prev='';
+  if(b.type==='text') prev=`${cfg.heading?`<h4>${esc(cfg.heading)}</h4>`:''}${esc(cfg.body||'')||'<i>empty text</i>'}`;
+  else if(b.type==='image') prev = cfg.media_id?`<img src="${API}/api/funnels/media/${cfg.media_id}">`:(cfg.url?`<img src="${esc(cfg.url)}">`:'<i>no image set</i>');
+  else if(b.type==='video') prev = cfg.url?esc(cfg.url):(cfg.media_id?'uploaded video':'<i>no video set</i>');
+  else if(b.type==='audio') prev = cfg.media_id?'uploaded audio':(cfg.url?esc(cfg.url):'<i>no audio set</i>');
+  else if(b.type==='cta') prev = 'Form: '+((cfg.fields||['first_name','last_name','email','business_name']).join(', '));
+  return `<div class="blk ${selBlock===i?'sel':''}" onclick="selectBlock(${i})">
+    <div class="blk-head"><span class="blk-type">${b.type}</span>
+      <div class="blk-ctrls">
+        <button onclick="event.stopPropagation();moveBlock(${i},-1)">↑</button>
+        <button onclick="event.stopPropagation();moveBlock(${i},1)">↓</button>
+        <button onclick="event.stopPropagation();delBlock(${i})">✕</button>
+      </div></div>
+    <div class="blk-preview">${prev}</div></div>`;
+}
+
+function selectBlock(i){ selBlock=i; renderBuilder(); }
+function gotoStep(i){ curStep=i; selBlock=null; renderBuilder(); }
+
+function addBlock(type){
+  const defaults={text:{heading:'',body:'',align:'left'},image:{width:'full'},video:{controls:true},audio:{controls:true},cta:{fields:['first_name','last_name','email','business_name']}};
+  cur.steps[curStep].blocks.push({type,id:Math.random().toString(36).slice(2),config:defaults[type]||{}});
+  selBlock = cur.steps[curStep].blocks.length-1; markDirty(); renderBuilder();
+}
+function moveBlock(i,d){ const b=cur.steps[curStep].blocks; const j=i+d; if(j<0||j>=b.length)return; [b[i],b[j]]=[b[j],b[i]]; selBlock=j; markDirty(); renderBuilder(); }
+function delBlock(i){ cur.steps[curStep].blocks.splice(i,1); selBlock=null; markDirty(); renderBuilder(); }
+
+function addStep(){ cur.steps.push({blocks:[],title:`Step ${cur.steps.length+1}`,cta_button_text:'Continue',_new:true}); cur.type='multistep'; curStep=cur.steps.length-1; selBlock=null; markDirty(); renderBuilder(); }
+function delStep(i){ if(cur.steps.length<=1)return; cur.steps.splice(i,1); curStep=0; selBlock=null; markDirty(); renderBuilder(); }
+
+function renderSettings(){
+  const el=document.getElementById('settings');
+  const step=cur.steps[curStep];
+  if(selBlock===null||!step.blocks[selBlock]){ el.innerHTML='<div class="empty" style="padding:24px 0">Select a block to edit</div>'; return; }
+  const b=step.blocks[selBlock], cfg=b.config||{};
+  let html='';
+  if(b.type==='text'){
+    html=`<label>Heading</label><input value="${esc(cfg.heading)}" oninput="setCfg('heading',this.value)">
+    <label>Body</label><textarea rows="4" oninput="setCfg('body',this.value)">${esc(cfg.body)}</textarea>
+    <label>Align</label><select onchange="setCfg('align',this.value)"><option ${cfg.align==='left'?'selected':''}>left</option><option ${cfg.align==='center'?'selected':''}>center</option><option ${cfg.align==='right'?'selected':''}>right</option></select>`;
+  } else if(b.type==='image'){
+    html=`<label>Image URL</label><input value="${esc(cfg.url)}" oninput="setCfg('url',this.value)" placeholder="https://…">
+    <label>Or upload</label><input type="file" accept="image/*" onchange="uploadMedia(this,'image')">
+    <label>Width</label><select onchange="setCfg('width',this.value)"><option ${cfg.width==='full'?'selected':''}>full</option><option value="half" ${cfg.width==='half'?'selected':''}>half</option></select>
+    <label>Alt text</label><input value="${esc(cfg.alt)}" oninput="setCfg('alt',this.value)">`;
+  } else if(b.type==='video'){
+    html=`<label>Video URL (YouTube/Vimeo/direct)</label><input value="${esc(cfg.url)}" oninput="setCfg('url',this.value)">
+    <label>Or upload</label><input type="file" accept="video/*" onchange="uploadMedia(this,'video')">
+    <div class="chk"><input type="checkbox" ${cfg.autoplay?'checked':''} onchange="setCfg('autoplay',this.checked)"><span>Autoplay (muted)</span></div>`;
+  } else if(b.type==='audio'){
+    html=`<label>Audio URL</label><input value="${esc(cfg.url)}" oninput="setCfg('url',this.value)">
+    <label>Or upload</label><input type="file" accept="audio/*" onchange="uploadMedia(this,'audio')">`;
+  } else if(b.type==='cta'){
+    const all=['first_name','last_name','email','phone','business_name','lead_volume','notes'];
+    const sel=cfg.fields||['first_name','last_name','email','business_name'];
+    html=`<label>Form fields</label>`+all.map(f=>`<div class="chk"><input type="checkbox" ${sel.includes(f)?'checked':''} onchange="toggleField('${f}',this.checked)"><span>${f}</span></div>`).join('');
+  }
+  html+=`<label style="margin-top:16px">Button text</label><input value="${esc(step.cta_button_text)}" oninput="setStepCta(this.value)">`;
+  el.innerHTML=html;
+}
+
+function setCfg(k,v){ cur.steps[curStep].blocks[selBlock].config[k]=v; markDirty(); if(k!=='body'&&k!=='heading')renderBuilder(); else document.getElementById('canvas').children[selBlock].querySelector('.blk-preview').innerHTML=(cur.steps[curStep].blocks[selBlock].config.heading?`<h4>${esc(cur.steps[curStep].blocks[selBlock].config.heading)}</h4>`:'')+esc(cur.steps[curStep].blocks[selBlock].config.body||''); }
+function setStepCta(v){ cur.steps[curStep].cta_button_text=v; markDirty(); }
+function toggleField(f,on){ const b=cur.steps[curStep].blocks[selBlock]; let s=b.config.fields||['first_name','last_name','email','business_name']; if(on&&!s.includes(f))s.push(f); if(!on)s=s.filter(x=>x!==f); b.config.fields=s; markDirty(); renderBuilder(); }
+
+async function uploadMedia(input,type){
+  const file=input.files[0]; if(!file) return;
+  if(file.size>20*1024*1024){ alert('File too large (max 20MB). Use a URL for big videos.'); return; }
+  const b64 = await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(file);});
+  const r = await fetch(`${API}/api/funnels/${cur.id}/media`,{method:'POST',headers:h(),body:JSON.stringify({media_type:type,filename:file.name,mime_type:file.type,data_base64:b64})});
+  if(r.ok){ const m=await r.json(); cur.steps[curStep].blocks[selBlock].config.media_id=m.id; cur.steps[curStep].blocks[selBlock].config.url=''; markDirty(); renderBuilder(); }
+  else alert('Upload failed');
+}
+
+// Theme
+function loadThemeInputs(){ const t=cur.theme||{}; document.getElementById('th_bg').value=t.bg||'#0A0A0E'; document.getElementById('th_text').value=t.text||'#F4F0E8'; document.getElementById('th_accent').value=t.accent||'#F5A623'; document.getElementById('th_btn').value=t.btn||'#F5A623'; document.getElementById('th_btnText').value=t.btnText||'#0A0A0E'; }
+function toggleTheme(){ document.getElementById('themePanel').classList.toggle('hidden'); }
+function updTheme(){ cur.theme={bg:document.getElementById('th_bg').value,text:document.getElementById('th_text').value,accent:document.getElementById('th_accent').value,btn:document.getElementById('th_btn').value,btnText:document.getElementById('th_btnText').value}; markDirty(); }
+
+function renderPubUrls(){
+  const el=document.getElementById('pubUrls');
+  if(cur.status!=='published'){ el.innerHTML=''; return; }
+  const base = location.origin + location.pathname.replace('funnel-builder.html','funnel.html');
+  const plats=['facebook','instagram','tiktok','snapchat','linkedin','twitter'];
+  el.innerHTML = `<div class="plabel" style="margin-top:20px">Public URLs</div>`+
+    `<div class="url-box">${base}?slug=${cur.slug}</div>`+
+    plats.map(p=>`<div class="url-box">${base}?slug=${cur.slug}&platform=${p}</div>`).join('');
+}
+
+async function saveFunnel(){
+  // save funnel meta
+  await fetch(`${API}/api/funnels/${cur.id}`,{method:'PATCH',headers:h(),body:JSON.stringify({name:cur.name,type:cur.type,theme:cur.theme||{},thank_you_message:document.getElementById('thanksMsg').value})});
+  // save steps: update existing, create new
+  for(let i=0;i<cur.steps.length;i++){
+    const s=cur.steps[i];
+    if(s.id){
+      await fetch(`${API}/api/funnels/${cur.id}/steps/${s.id}`,{method:'PATCH',headers:h(),body:JSON.stringify({title:s.title,blocks:s.blocks,cta_button_text:s.cta_button_text,step_order:i})});
+    } else {
+      const r=await fetch(`${API}/api/funnels/${cur.id}/steps`,{method:'POST',headers:h(),body:JSON.stringify({title:s.title,blocks:s.blocks,cta_button_text:s.cta_button_text})});
+      if(r.ok){ const ns=await r.json(); s.id=ns.id; }
+    }
+  }
+  dirty=false; flash('Saved');
+}
+
+async function togglePublish(){
+  if(dirty) await saveFunnel();
+  const action = cur.status==='published'?'unpublish':'publish';
+  const r=await fetch(`${API}/api/funnels/${cur.id}/${action}`,{method:'POST',headers:h()});
+  if(r.ok){ cur.status = cur.status==='published'?'draft':'published'; document.getElementById('pubBtn').textContent = cur.status==='published'?'Unpublish':'Publish'; renderPubUrls(); flash(cur.status==='published'?'Published':'Unpublished'); }
+}
+
+function flash(msg){ const b=document.createElement('div'); b.textContent=msg; b.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--green);color:#04170c;padding:10px 18px;border-radius:8px;font-weight:700;z-index:100'; document.body.appendChild(b); setTimeout(()=>b.remove(),1600); }
+
+window.addEventListener('load',()=>{ const pb=document.getElementById('pubBtn'); });
+</script>
+</body>
+</html>

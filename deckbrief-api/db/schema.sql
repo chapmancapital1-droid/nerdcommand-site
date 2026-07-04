@@ -77,6 +77,47 @@ CREATE TABLE IF NOT EXISTS briefs (
 ALTER TABLE briefs ADD COLUMN IF NOT EXISTS account_id UUID REFERENCES accounts(id) ON DELETE CASCADE;
 UPDATE briefs SET account_id = '00000000-0000-0000-0000-000000000001' WHERE account_id IS NULL;
 
+-- ── Funnels (landing-page builder) ──────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS funnels (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  account_id        UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  name              TEXT NOT NULL,
+  slug              TEXT NOT NULL UNIQUE,
+  type              TEXT NOT NULL DEFAULT 'single' CHECK (type IN ('single','multistep')),
+  status            TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published')),
+  theme             JSONB NOT NULL DEFAULT '{}'::jsonb,
+  thank_you_message TEXT DEFAULT 'Thanks — we''ll be in touch shortly.',
+  views             INTEGER NOT NULL DEFAULT 0,
+  submissions       INTEGER NOT NULL DEFAULT 0,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS funnel_steps (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  funnel_id       UUID NOT NULL REFERENCES funnels(id) ON DELETE CASCADE,
+  step_order      INTEGER NOT NULL DEFAULT 0,
+  title           TEXT,
+  blocks          JSONB NOT NULL DEFAULT '[]'::jsonb,
+  cta_button_text TEXT DEFAULT 'Submit',
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS funnel_media (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  funnel_id   UUID NOT NULL REFERENCES funnels(id) ON DELETE CASCADE,
+  media_type  TEXT NOT NULL CHECK (media_type IN ('image','video','audio')),
+  filename    TEXT,
+  mime_type   TEXT,
+  data        BYTEA,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_funnels_account ON funnels(account_id);
+CREATE INDEX IF NOT EXISTS idx_funnels_slug ON funnels(slug);
+CREATE INDEX IF NOT EXISTS idx_funnel_steps_funnel ON funnel_steps(funnel_id);
+CREATE INDEX IF NOT EXISTS idx_funnel_media_funnel ON funnel_media(funnel_id);
+
 CREATE INDEX IF NOT EXISTS idx_leads_account ON leads(account_id);
 CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
 CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email);
@@ -97,4 +138,9 @@ $$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS leads_updated_at ON leads;
 CREATE TRIGGER leads_updated_at
   BEFORE UPDATE ON leads
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+DROP TRIGGER IF EXISTS funnels_updated_at ON funnels;
+CREATE TRIGGER funnels_updated_at
+  BEFORE UPDATE ON funnels
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();

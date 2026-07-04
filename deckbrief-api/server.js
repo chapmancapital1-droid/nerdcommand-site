@@ -18,7 +18,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.use(express.json());
+// Capture raw body so webhook HMAC signatures can be verified against exact bytes
+app.use(express.json({ limit: '25mb', verify: (req, _res, buf) => { req.rawBody = buf; } }));
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
@@ -27,6 +28,8 @@ app.use('/api/leads', require('./routes/leads'));
 app.use('/api', require('./routes/pipeline'));
 app.use('/api/ceo', require('./routes/ceo'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/webhooks', require('./routes/webhooks'));
+app.use('/api/funnels', require('./routes/funnels'));
 
 app.use((err, req, res, next) => {
   console.error('[error]', err.message);

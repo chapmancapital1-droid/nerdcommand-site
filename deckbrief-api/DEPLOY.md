@@ -179,6 +179,36 @@ Expect: `19 passed, 0 failed.`
 
 ---
 
+## STEP 8 — Lead channels (webhooks + funnels)
+
+### Social lead-ad webhooks
+Every platform posts to one pattern (route leads to an account via its intake_key):
+```
+POST https://YOUR-URL/api/webhooks/leads/{platform}?account_key={intake_key}
+```
+`{platform}` = `facebook` | `instagram` | `tiktok` | `snapchat` | `linkedin` | `google_forms` | `generic`.
+
+- Configure this URL in each ad platform's Lead Center / CRM integration.
+- Facebook/Instagram subscription verification: GET handshake uses `META_VERIFY_TOKEN`
+  (default `deckbrief-verify`).
+- Signature verification is OFF until you set the platform's secret env var
+  (`META_APP_SECRET`, `TIKTOK_APP_SECRET`, `SNAPCHAT_CLIENT_SECRET`,
+  `LINKEDIN_CLIENT_SECRET`). Set them once your app is approved to enforce HMAC.
+- Google Forms: add an Apps Script `onFormSubmit` trigger that POSTs the response
+  to `.../api/webhooks/leads/google_forms?account_key=...`.
+- Twitter/X has no native lead form — drive traffic to a funnel page instead.
+
+### Funnel builder
+- Builder UI: `funnel-builder.html` — log in with an account `admin_key` (dbk_…).
+  Build blocks (text/image/video/audio/CTA), set theme, publish.
+- Public funnel page: `funnel.html?slug={slug}&platform={platform}`.
+  Share the platform-tagged URLs (shown in the builder after publishing) in each
+  ad/bio link so leads are attributed automatically. Leads land in the same CRM
+  pipeline with source `funnel:{slug}:{platform}`.
+- Source analytics appear in `ceo.html` (Lead Sources card).
+
+---
+
 ## Environment variables reference
 
 | Var | Where | What |
@@ -189,6 +219,11 @@ Expect: `19 passed, 0 failed.`
 | `API_SECRET_KEY` | Railway only | Master super-admin key |
 | `BRIEF_RECIPIENT_EMAIL` | Railway + GH secret | Default brief/notification inbox |
 | `DECKBRIEF_DATABASE_URL` | GH secret | Same as DATABASE_URL, for the cron |
+| `META_VERIFY_TOKEN` | Railway (optional) | FB/IG webhook subscription handshake |
+| `META_APP_SECRET` | Railway (optional) | Enforce FB/IG webhook HMAC |
+| `TIKTOK_APP_SECRET` | Railway (optional) | Enforce TikTok webhook HMAC |
+| `SNAPCHAT_CLIENT_SECRET` | Railway (optional) | Enforce Snapchat webhook HMAC |
+| `LINKEDIN_CLIENT_SECRET` | Railway (optional) | Enforce LinkedIn webhook HMAC |
 
 ---
 

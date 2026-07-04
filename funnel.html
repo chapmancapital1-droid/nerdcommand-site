@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeckBrief Funnel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --accent:#F5A623; --bg:#0A0A0E; --text:#F4F0E8; --btn:#F5A623; --btnText:#0A0A0E; --font:'Inter',sans-serif; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;line-height:1.6}
+  .wrap{max-width:640px;margin:0 auto;padding:40px 24px}
+  .block{margin-bottom:28px}
+  .block img{width:100%;border-radius:12px;display:block}
+  .block img.half{width:60%;margin:0 auto}
+  .block video,.block audio{width:100%;border-radius:12px}
+  .b-text h2{font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.15}
+  .b-text p{font-size:17px;opacity:0.85}
+  .align-center{text-align:center}
+  .align-right{text-align:right}
+  form{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-top:8px}
+  form label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;opacity:0.6;margin:14px 0 6px}
+  form input,form select,form textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:9px;padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--font);outline:none}
+  form input:focus,form select:focus,form textarea:focus{border-color:var(--accent)}
+  .btn{width:100%;background:var(--btn);color:var(--btnText);border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px;font-family:var(--font);transition:opacity 0.2s}
+  .btn:hover{opacity:0.9}
+  .btn:disabled{opacity:0.5;cursor:default}
+  .dots{display:flex;gap:8px;justify-content:center;margin-bottom:28px}
+  .dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.2)}
+  .dot.active{background:var(--accent)}
+  .nav{display:flex;gap:12px;margin-top:16px}
+  .nav .btn{margin-top:0}
+  .back{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--text)}
+  .thanks{text-align:center;padding:60px 24px}
+  .thanks .check{width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--btnText);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px;font-weight:800}
+  .thanks h2{font-size:26px;font-weight:800;margin-bottom:10px}
+  .center{display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .powered{text-align:center;font-size:12px;opacity:0.35;margin-top:32px}
+</style>
+</head>
+<body>
+<div id="root"><div class="center"><div class="spinner"></div></div></div>
+
+<script>
+const API = 'https://deckbrief-api.up.railway.app';
+const params = new URLSearchParams(location.search);
+// Support /funnel.html?slug=xyz&platform=facebook  OR  path /f/xyz/facebook rewritten to query
+let slug = params.get('slug');
+let platform = params.get('platform') || '';
+// Path form: /f/<slug>/<platform>
+if (!slug) {
+  const parts = location.pathname.split('/').filter(Boolean);
+  const fi = parts.indexOf('f');
+  if (fi >= 0 && parts[fi+1]) { slug = parts[fi+1]; platform = parts[fi+2] || platform; }
+}
+
+let funnel = null, stepIndex = 0;
+const root = document.getElementById('root');
+
+function applyTheme(t){
+  const r = document.documentElement.style;
+  if(t.bg) r.setProperty('--bg', t.bg);
+  if(t.text) r.setProperty('--text', t.text);
+  if(t.accent) r.setProperty('--accent', t.accent);
+  if(t.btn) r.setProperty('--btn', t.btn);
+  if(t.btnText) r.setProperty('--btnText', t.btnText);
+  if(t.font) r.setProperty('--font', t.font);
+}
+
+async function load(){
+  if(!slug){ root.innerHTML = errorHtml('No funnel specified'); return; }
+  try{
+    const res = await fetch(`${API}/api/funnels/public/${encodeURIComponent(slug)}`);
+    if(!res.ok) throw new Error();
+    funnel = await res.json();
+    funnel.steps = (funnel.steps||[]).sort((a,b)=>a.step_order-b.step_order);
+    applyTheme(funnel.theme||{});
+    render();
+  }catch(e){ root.innerHTML = errorHtml('Funnel Not Found'); }
+}
+
+function errorHtml(msg){
+  return `<div class="center"><div style="text-align:center"><h2 style="font-size:24px;font-weight:800">${msg}</h2><p style="opacity:0.6;margin-top:8px">This funnel may be unpublished or the link is wrong.</p></div></div>`;
+}
+
+function blockHtml(b){
+  const cfg = b.config || {};
+  if(b.type==='image'){
+    const src = cfg.media_id ? `${API}/api/funnels/media/${cfg.media_id}` : (cfg.url||'');
+    return `<div class="block"><img class="${cfg.width==='half'?'half':''}" src="${src}" alt="${cfg.alt||''}"></div>`;
+  }
+  if(b.type==='video'){
+    if(cfg.url && (cfg.url.includes('youtube')||cfg.url.includes('vimeo'))){
+      const embed = cfg.url.replace('watch?v=','embed/');
+      return `<div class="block"><iframe width="100%" height="340" style="border-radius:12px" src="${embed}" frameborder="0" allowfullscreen></iframe></div>`;
+    }
+    const src = cfg.media_id ? `${API}/api/funnels/media/${cfg.media_id}` : (cfg.url||'');
+    return `<div class="block"><video ${cfg.controls!==false?'controls':''} ${cfg.autoplay?'autoplay muted':''} src="${src}"></video></div>`;
+  }
+  if(b.type==='audio'){
+    const src = cfg.media_id ? `${API}/api/funnels/media/${cfg.media_id}` : (cfg.url||'');
+    return `<div class="block"><audio ${cfg.controls!==false?'controls':''} ${cfg.autoplay?'autoplay':''} src="${src}" style="width:100%"></audio></div>`;
+  }
+  if(b.type==='text'){
+    const al = cfg.align==='center'?'align-center':cfg.align==='right'?'align-right':'';
+    return `<div class="block b-text ${al}">${cfg.heading?`<h2>${esc(cfg.heading)}</h2>`:''}${cfg.body?`<p>${esc(cfg.body)}</p>`:''}</div>`;
+  }
+  if(b.type==='cta'){
+    const fields = cfg.fields || ['first_name','last_name','email','business_name'];
+    const labels = {first_name:'First name',last_name:'Last name',email:'Email',phone:'Phone',business_name:'Business name',notes:'Notes',lead_volume:'Monthly lead volume'};
+    let inner = '';
+    fields.forEach(f=>{
+      inner += `<label>${labels[f]||f}</label>`;
+      if(f==='notes') inner += `<textarea name="${f}" rows="3"></textarea>`;
+      else if(f==='lead_volume') inner += `<select name="${f}"><option value="">Select…</option><option><10</option><option>10-50</option><option>50-200</option><option>200+</option></select>`;
+      else inner += `<input name="${f}" type="${f==='email'?'email':'text'}" ${f==='email'?'required':''}>`;
+    });
+    return `<div class="block"><form id="ctaForm">${inner}</form></div>`;
+  }
+  return '';
+}
+
+function render(){
+  const steps = funnel.steps.length ? funnel.steps : [{blocks:[]}];
+  const step = steps[stepIndex];
+  const isLast = stepIndex === steps.length - 1;
+  const multi = funnel.type === 'multistep' && steps.length > 1;
+
+  let html = '<div class="wrap">';
+  if(multi){
+    html += '<div class="dots">' + steps.map((_,i)=>`<div class="dot ${i===stepIndex?'active':''}"></div>`).join('') + '</div>';
+  }
+  (step.blocks||[]).forEach(b=>{ html += blockHtml(b); });
+
+  const hasCta = (step.blocks||[]).some(b=>b.type==='cta');
+  html += '<div class="nav">';
+  if(multi && stepIndex>0) html += `<button class="btn back" onclick="prev()">Back</button>`;
+  if(!isLast){
+    html += `<button class="btn" onclick="next()">${esc(step.cta_button_text||'Continue')}</button>`;
+  } else if(!hasCta){
+    html += `<button class="btn" onclick="submitNoForm()">${esc(step.cta_button_text||'Submit')}</button>`;
+  }
+  html += '</div>';
+  html += '<div class="powered">Powered by DeckBrief</div>';
+  html += '</div>';
+  root.innerHTML = html;
+
+  const form = document.getElementById('ctaForm');
+  if(form){
+    form.addEventListener('submit', e=>{ e.preventDefault(); submitForm(form); });
+    // Add a submit button to the form's step
+    const nav = root.querySelector('.nav');
+    const b = document.createElement('button');
+    b.className='btn'; b.type='submit'; b.textContent = step.cta_button_text||'Submit';
+    b.onclick = (e)=>{ e.preventDefault(); submitForm(form); };
+    nav.appendChild(b);
+  }
+}
+
+window.next = ()=>{ if(stepIndex<funnel.steps.length-1){stepIndex++;render();} };
+window.prev = ()=>{ if(stepIndex>0){stepIndex--;render();} };
+window.submitNoForm = ()=> submitData({});
+
+async function submitForm(form){
+  const data = {};
+  new FormData(form).forEach((v,k)=>{ if(v) data[k]=v; });
+  await submitData(data);
+}
+
+async function submitData(data){
+  const btns = root.querySelectorAll('.btn'); btns.forEach(b=>b.disabled=true);
+  data.platform = platform || undefined;
+  try{
+    const res = await fetch(`${API}/api/funnels/public/${encodeURIComponent(slug)}/submit`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const out = await res.json();
+    if(res.ok){ showThanks(out.thank_you_message); }
+    else { btns.forEach(b=>b.disabled=false); alert(out.error||'Submission failed'); }
+  }catch(e){ btns.forEach(b=>b.disabled=false); alert('Network error'); }
+}
+
+function showThanks(msg){
+  root.innerHTML = `<div class="wrap"><div class="thanks"><div class="check">✓</div><h2>Thank you!</h2><p style="opacity:0.8">${esc(msg||"We'll be in touch shortly.")}</p></div></div>`;
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+load();
+</script>
+</body>
+</html>

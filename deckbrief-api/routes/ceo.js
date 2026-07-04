@@ -53,6 +53,33 @@ router.get('/activity', requireAuth, async (req, res) => {
   }
 });
 
+// Leads-by-source breakdown with conversion (account-scoped)
+router.get('/sources', requireAuth, async (req, res) => {
+  const a = acct(req.account.id, { leading: true });
+  try {
+    const { rows } = await pool.query(`
+      SELECT source,
+        COUNT(*) AS total,
+        COUNT(*) FILTER (WHERE status = 'closed_won') AS won,
+        COUNT(*) FILTER (WHERE status IN ('new','contacted','qualified','proposal')) AS active,
+        COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days') AS new_7d
+      FROM leads ${a.sql}
+      GROUP BY source ORDER BY total DESC
+    `, a.params);
+    const sources = rows.map(r => ({
+      source: r.source || 'unknown',
+      total: parseInt(r.total),
+      won: parseInt(r.won),
+      active: parseInt(r.active),
+      new_7d: parseInt(r.new_7d),
+      conversion_pct: parseInt(r.total) > 0 ? Math.round((parseInt(r.won) / parseInt(r.total)) * 100) : 0,
+    }));
+    res.json({ sources, total_leads: sources.reduce((s, x) => s + x.total, 0) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.get('/export/leads.csv', requireAuth, async (req, res) => {
   const a = acct(req.account.id, { leading: true });
   try {

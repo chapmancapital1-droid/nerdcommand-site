@@ -27,7 +27,7 @@ if (!url) {
 }
 process.env.DATABASE_URL = url;
 
-const { pool, accounts, leads, briefs, events } = require('../db/queries');
+const { pool, accounts, leads, briefs, events, funnels, funnelSteps } = require('../db/queries');
 
 const DEFAULT_ID = '00000000-0000-0000-0000-000000000001';
 let passed = 0, failed = 0;
@@ -115,8 +115,26 @@ async function applySchema() {
   check('account A sees only its brief', (await briefs.getAll(a1.id)).rows.length === 1);
   check('master sees both test briefs', (await briefs.getAll(null)).rows.filter(b => b.recipient_email.endsWith('@verify.test')).length === 2);
 
+  console.log('\n[verify] FUNNELS — account-scoped...');
+  await pool.query(`DELETE FROM funnels WHERE slug LIKE 'vtest-%'`);
+  const f1 = (await funnels.create(a1.id, 'A Funnel', 'vtest-a-' + Date.now(), 'single')).rows[0];
+  const f2 = (await funnels.create(a2.id, 'B Funnel', 'vtest-b-' + Date.now(), 'multistep')).rows[0];
+  check('funnel created for account A', !!f1.id);
+  check('account A lists only its funnel', (await funnels.list(a1.id)).rows.filter(f => f.slug.startsWith('vtest-')).length === 1);
+  check('account B cannot fetch A funnel by id', (await funnels.getById(f1.id, a2.id)).rows.length === 0);
+  check('account A can fetch its own funnel', (await funnels.getById(f1.id, a1.id)).rows.length === 1);
+  check('master can fetch any funnel', (await funnels.getById(f1.id, null)).rows.length === 1);
+  check('public getBySlug works', (await funnels.getBySlug(f1.slug)).rows.length === 1);
+  await funnelSteps.create(f1.id, 0, 'Step 1', [{ type: 'text', config: { heading: 'Hi' } }], 'Submit');
+  check('funnel step created + listed', (await funnelSteps.listByFunnel(f1.id)).rows.length === 1);
+  await funnels.incViews(f1.id); await funnels.incSubmissions(f1.id);
+  const f1r = (await funnels.getById(f1.id, a1.id)).rows[0];
+  check('views + submissions increment', f1r.views === 1 && f1r.submissions === 1);
+  check('account B cannot update A funnel', (await funnels.update(f1.id, a2.id, { name: 'hacked' })).rows.length === 0);
+
   // Cleanup
   console.log('\n[verify] Cleaning up test data...');
+  await pool.query(`DELETE FROM funnels WHERE slug LIKE 'vtest-%'`);
   await pool.query(`DELETE FROM leads WHERE email LIKE '%@verify.test'`);
   await pool.query(`DELETE FROM briefs WHERE recipient_email LIKE '%@verify.test'`);
   await pool.query(`DELETE FROM accounts WHERE email LIKE '%@verify.test'`);

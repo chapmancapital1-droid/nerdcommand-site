@@ -139,6 +139,18 @@ tr:hover td{background:rgba(245,166,35,0.04)}
       </div>
     </div>
 
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title"><div class="dot" style="background:var(--purple)"></div>Lead Sources
+        <a href="funnel-builder.html" style="margin-left:auto;font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Funnel Builder →</a>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Source</th><th>Total</th><th>Active</th><th>Won</th><th>New (7d)</th><th>Conversion</th></tr></thead>
+          <tbody id="sourcesTable"><tr><td colspan="6" class="empty-state"><div class="loading"><div class="spinner"></div>Loading…</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title"><div class="dot"></div>Full Lead Pipeline</div>
       <div style="overflow-x:auto">
@@ -186,7 +198,7 @@ async function api(path) {
 async function loadDashboard() {
   document.getElementById('lastRefresh').textContent = 'Refreshing...';
   try {
-    const [data, leads] = await Promise.all([api('/api/ceo/dashboard'), api('/api/leads')]);
+    const [data, leads, sources] = await Promise.all([api('/api/ceo/dashboard'), api('/api/leads'), api('/api/ceo/sources').catch(()=>({sources:[]}))]);
 
     // KPIs
     const p = data.pipeline;
@@ -269,6 +281,22 @@ async function loadDashboard() {
           </div>
         </div>
       </div>`).join('') || '<div class="empty-state">No trend data yet.</div>';
+
+    // Sources table
+    const stbody = document.getElementById('sourcesTable');
+    const srcs = (sources && sources.sources) || [];
+    if(!srcs.length){
+      stbody.innerHTML = '<tr><td colspan="6" class="empty-state">No leads yet.</td></tr>';
+    } else {
+      stbody.innerHTML = srcs.map(s=>`<tr>
+        <td><span style="font-weight:500">${s.source}</span></td>
+        <td>${s.total}</td>
+        <td>${s.active}</td>
+        <td style="color:var(--green)">${s.won}</td>
+        <td>${s.new_7d}</td>
+        <td style="font-weight:600;color:var(--gold)">${s.conversion_pct}%</td>
+      </tr>`).join('');
+    }
 
     // Leads table
     const tbody = document.getElementById('leadsTable');

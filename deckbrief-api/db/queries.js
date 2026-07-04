@@ -137,4 +137,76 @@ const briefs = {
   getById: (id) => q(`SELECT * FROM briefs WHERE id = $1`, [id]),
 };
 
-module.exports = { pool, scope, accounts, leads, events, briefs };
+const funnels = {
+  create: (accountId, name, slug, type) => q(
+    `INSERT INTO funnels (account_id, name, slug, type) VALUES ($1,$2,$3,$4) RETURNING *`,
+    [accountId, name, slug, type || 'single']
+  ),
+
+  list: (accountId) => {
+    const s = scope(accountId);
+    const where = s.clause ? `WHERE ${s.clause}` : '';
+    return q(`SELECT * FROM funnels ${where} ORDER BY created_at DESC`, s.param != null ? [s.param] : []);
+  },
+
+  // Full funnel with steps, account-checked (null accountId = master/public-internal)
+  getById: (id, accountId) => {
+    const params = [id];
+    let extra = '';
+    if (accountId != null) { params.push(accountId); extra = ' AND account_id = $2'; }
+    return q(`SELECT * FROM funnels WHERE id = $1${extra}`, params);
+  },
+
+  getBySlug: (slug) => q(`SELECT * FROM funnels WHERE slug = $1`, [slug]),
+
+  update: (id, accountId, fields) => {
+    const allowed = ['name', 'type', 'status', 'theme', 'thank_you_message'];
+    const sets = [], vals = [id, accountId];
+    Object.entries(fields).forEach(([k, v]) => {
+      if (allowed.includes(k)) {
+        vals.push(k === 'theme' ? JSON.stringify(v) : v);
+        sets.push(`${k} = $${vals.length}${k === 'theme' ? '::jsonb' : ''}`);
+      }
+    });
+    if (!sets.length) return Promise.resolve({ rows: [] });
+    return q(`UPDATE funnels SET ${sets.join(', ')} WHERE id = $1 AND account_id = $2 RETURNING *`, vals);
+  },
+
+  remove: (id, accountId) => q(`DELETE FROM funnels WHERE id = $1 AND account_id = $2 RETURNING id`, [id, accountId]),
+
+  incViews: (id) => q(`UPDATE funnels SET views = views + 1 WHERE id = $1`, [id]),
+  incSubmissions: (id) => q(`UPDATE funnels SET submissions = submissions + 1 WHERE id = $1`, [id]),
+};
+
+const funnelSteps = {
+  listByFunnel: (funnelId) => q(
+    `SELECT * FROM funnel_steps WHERE funnel_id = $1 ORDER BY step_order ASC`, [funnelId]
+  ),
+  create: (funnelId, stepOrder, title, blocks, ctaText) => q(
+    `INSERT INTO funnel_steps (funnel_id, step_order, title, blocks, cta_button_text)
+     VALUES ($1,$2,$3,$4::jsonb,$5) RETURNING *`,
+    [funnelId, stepOrder, title, JSON.stringify(blocks || []), ctaText || 'Submit']
+  ),
+  update: (id, funnelId, fields) => {
+    const sets = [], vals = [id, funnelId];
+    if (fields.title !== undefined) { vals.push(fields.title); sets.push(`title = $${vals.length}`); }
+    if (fields.blocks !== undefined) { vals.push(JSON.stringify(fields.blocks)); sets.push(`blocks = $${vals.length}::jsonb`); }
+    if (fields.cta_button_text !== undefined) { vals.push(fields.cta_button_text); sets.push(`cta_button_text = $${vals.length}`); }
+    if (fields.step_order !== undefined) { vals.push(fields.step_order); sets.push(`step_order = $${vals.length}`); }
+    if (!sets.length) return Promise.resolve({ rows: [] });
+    return q(`UPDATE funnel_steps SET ${sets.join(', ')} WHERE id = $1 AND funnel_id = $2 RETURNING *`, vals);
+  },
+  remove: (id, funnelId) => q(`DELETE FROM funnel_steps WHERE id = $1 AND funnel_id = $2 RETURNING id`, [id, funnelId]),
+  removeAllForFunnel: (funnelId) => q(`DELETE FROM funnel_steps WHERE funnel_id = $1`, [funnelId]),
+};
+
+const funnelMedia = {
+  create: (funnelId, mediaType, filename, mimeType, data) => q(
+    `INSERT INTO funnel_media (funnel_id, media_type, filename, mime_type, data)
+     VALUES ($1,$2,$3,$4,$5) RETURNING id, media_type, filename, mime_type`,
+    [funnelId, mediaType, filename, mimeType, data]
+  ),
+  get: (id) => q(`SELECT * FROM funnel_media WHERE id = $1`, [id]),
+};
+
+module.exports = { pool, scope, accounts, leads, events, briefs, funnels, funnelSteps, funnelMedia };
