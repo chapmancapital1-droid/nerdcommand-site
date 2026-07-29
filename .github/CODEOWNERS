@@ -1,0 +1,6 @@
+* @nerdcommand/platform
+/assets/css/ @nerdcommand/design @nerdcommand/platform
+/assets/js/product-registry.js @nerdcommand/product @nerdcommand/platform
+/api/ai/ @nerdcommand/platform @nerdcommand/security
+/connector/ @nerdcommand/platform @nerdcommand/security
+/docs/ @nerdcommand/product @nerdcommand/platform

@@ -9,8 +9,11 @@
   },
   "site": {
     "live_url": "https://chapmancapital1-droid.github.io/nerdcommand-site/",
+    "vercel_hosting": true,
+    "vercel_notes": "Vercel imports this GitHub repo; static HTML no build. Production domain nerdcommand.com after DNS.",
     "custom_domain": "nerdcommand.com",
     "custom_domain_wired": false,
+    "custom_domain_status": "owner_confirmed_dns_ready — wire after Vercel project + registrar records (docs/adr/0008)",
     "contact_email": "hello@nerdcommand.info"
   },
   "monitoring": {

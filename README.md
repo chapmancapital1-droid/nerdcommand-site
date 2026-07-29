@@ -1,49 +1,58 @@
-# NerdCommand.info
+# NerdCommand Site + Business OS (Stage 1)
 
-Marketing site for **GangsterNerds LLC** — a single self-contained `index.html`
-(HTML + CSS + vanilla JS, no build step) hosted on **GitHub Pages**.
+**nerdcommand.com** front door and **NerdCommand OS** UX shell, with **DeckBrief** API as the first live backend slice.
 
-**Live (after publish):** https://chapmancapital1.github.io/nerdcommand-site/
+| Surface | Path | Host |
+|---------|------|------|
+| Public site | `index.html`, `platform.html`, `foundry.html`, `deckbrief.html`, `pricing.html` | Vercel |
+| Command Center (15 views) | `/app/` | Vercel |
+| DeckBrief lead form | `deckbrief-access.html` | Vercel |
+| CEO dashboard | `ceo.html` | Vercel |
+| Funnel builder / player | `funnel-builder.html`, `funnel.html` | Vercel |
+| DeckBrief API | `deckbrief-api/` | Railway |
+| Local AI node | `connector/` | Local machine only |
 
----
+## Source of truth
 
-## Publish (one-time)
+- `NerdCommand_CIO_Blueprint_v1.md`
+- `NerdCommand_Updated_Architecture_and_Build_Plan_v1_1_0.md`
+- `docs/nexus/06-source-documents-read.md`
+- Product Registry: `assets/js/product-registry.js` + `product-registry.json`
 
-1. On github.com, create an **empty public** repo named **`nerdcommand-site`**
-   (do **not** add a README, .gitignore, or license — keep it empty so the first push is clean).
-2. From this folder, push:
-   ```
-   git push -u origin main
-   ```
-   The `origin` remote is already set to `https://github.com/chapmancapital1/nerdcommand-site.git`.
-3. On github.com → repo **Settings → Pages**:
-   - **Source:** Deploy from a branch
-   - **Branch:** `main` · folder **`/ (root)`** → **Save**
-4. Wait ~1 minute. The site is live at the URL above.
+## Local frontend
 
-## Update the site
-
-Every push to `main` auto-publishes in ~30s.
-
-- **With Claude Code (easiest):** "Change the hero headline to …", "Add a $299 pricing tier", etc.
-- **Manually:** edit `index.html`, then
-  ```
-  git add -A && git commit -m "your message" && git push
-  ```
-- **Helper:** `pwsh ./site_manager.ps1 push "your message"`
-
-## Health monitoring (PowerShell — no Python)
-
-```
-pwsh ./site_manager.ps1 check     # one-shot: uptime, response time, title, contact link, sections, ssl
-pwsh ./site_manager.ps1 monitor   # loop on the interval in site_config.json (default 30 min)
-pwsh ./site_manager.ps1 log       # last 10 results
+```powershell
+npm run check
+npm run dev
+# http://127.0.0.1:4173/       public site
+# http://127.0.0.1:4173/app/   OS shell
 ```
 
-## Custom domain (nerdcommand.info)
+## Local DeckBrief API
 
-Not wired yet — launching on the github.io URL first. To add it later, see
-**CLAUDE.md → Adding the custom domain later** (one `CNAME` file + DNS records).
+```powershell
+cd deckbrief-api
+copy .env.example .env
+npm install
+npm run db:up
+npm run seed:dev
+npm run dev
+npm run smoke
+```
 
----
-Maintained with Claude Code. See [`CLAUDE.md`](CLAUDE.md) for the full operating guide.
+Point any page at the local API with `?api=http://127.0.0.1:3000` or edit `api-config.json`.
+
+## Deploy
+
+1. **Vercel** — import this repo (static + `/api` AI functions). Framework: Other. See `docs/ux-prototype/VERCEL_DEPLOYMENT.md` and `docs/nexus/vercel-dns-runbook.md`.
+2. **Railway** — root directory `deckbrief-api`. See `deckbrief-api/DEPLOY.md`.
+3. Set `api_base_url` in `api-config.json` to the Railway URL after deploy.
+4. Domain: **nerdcommand.com** (owner DNS → Vercel).
+
+## Legacy
+
+Pre-promote marketing HTML is under `legacy/`.
+
+## Superagent
+
+See `AGENTS.md` and `docs/nexus/SUPERAGENT.md`.

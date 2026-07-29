@@ -44,8 +44,9 @@
 <body>
 <div id="root"><div class="center"><div class="spinner"></div></div></div>
 
+<script src="js/deckbrief-config.js"></script>
 <script>
-const API = 'https://deckbrief-api.up.railway.app';
+let API = 'https://deckbrief-api.up.railway.app';
 const params = new URLSearchParams(location.search);
 // Support /funnel.html?slug=xyz&platform=facebook  OR  path /f/xyz/facebook rewritten to query
 let slug = params.get('slug');
@@ -73,6 +74,7 @@ function applyTheme(t){
 async function load(){
   if(!slug){ root.innerHTML = errorHtml('No funnel specified'); return; }
   try{
+    API = await window.DeckBriefConfig.getApiBase();
     const res = await fetch(`${API}/api/funnels/public/${encodeURIComponent(slug)}`);
     if(!res.ok) throw new Error();
     funnel = await res.json();

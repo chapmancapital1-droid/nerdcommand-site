@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NerdCommand — AI Command Center for Creators & Business</title>
+<meta name="description" content="NerdCommand gives small businesses and creators AI superpowers. Lead capture, daily briefs, AI studio, and trading intelligence — all in one command center.">
+<meta property="og:title" content="NerdCommand — AI Command Center">
+<meta property="og:description" content="Capture leads, draft follow-ups, run an AI studio, and get your daily business brief. Built for creators and small business owners who move fast.">
+<meta property="og:image" content="https://chapmancapital1-droid.github.io/nerdcommand-site/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --gold:#F5C518;
+  --gold-dark:#D4A017;
+  --gold-dim:rgba(245,197,24,0.12);
+  --gold-mid:rgba(245,197,24,0.3);
+  --black:#0A0A0E;
+  --surface:#111118;
+  --surface2:#18181F;
+  --surface3:#1E1E26;
+  --text:#F4F0E8;
+  --text-muted:rgba(244,240,232,0.55);
+  --text-faint:rgba(244,240,232,0.3);
+  --border:rgba(244,240,232,0.08);
+  --border-gold:rgba(245,197,24,0.25);
+  --green:#3ECF8E;
+  --blue:#60A5FA;
+}
+body{background:var(--black);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,14,0.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-badge{width:34px;height:34px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#000;letter-spacing:-0.5px;}
+.logo-text{font-weight:700;font-size:16px;color:var(--text);}
+.logo-text span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{background:var(--gold);color:#000;padding:8px 22px;border-radius:8px;font-weight:700;font-size:14px;transition:background 0.2s;}
+.nav-cta:hover{background:var(--gold-dark);}
+
+/* HERO */
+.hero{min-height:92vh;display:flex;align-items:center;padding:80px 32px 60px;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 50% 30%, rgba(245,197,24,0.07) 0%, transparent 65%);pointer-events:none;}
+.hero-inner{max-width:1160px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:100px;padding:5px 16px;font-size:12px;font-weight:600;color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(38px,5.5vw,68px);font-weight:900;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;}
+.hero h1 span{color:var(--gold);}
+.hero-lede{font-size:18px;color:var(--text-muted);line-height:1.65;max-width:480px;margin-bottom:36px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-gold{background:var(--gold);color:#000;padding:13px 30px;border-radius:8px;font-weight:700;font-size:15px;transition:all 0.2s;display:inline-block;}
+.btn-gold:hover{background:var(--gold-dark);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--text);padding:13px 30px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);transition:all 0.2s;display:inline-block;}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.hero-proof{display:flex;gap:28px;margin-top:40px;flex-wrap:wrap;}
+.proof-item{display:flex;flex-direction:column;}
+.proof-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--gold);letter-spacing:-0.03em;}
+.proof-label{font-size:12px;color:var(--text-faint);margin-top:2px;}
+
+/* BRIEF CARD (hero right) */
+.brief-card{background:var(--surface);border:1px solid var(--border-gold);border-radius:20px;padding:28px;position:relative;overflow:hidden;}
+.brief-card::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(245,197,24,0.04) 0%,transparent 60%);pointer-events:none;}
+.brief-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.brief-rows{display:flex;flex-direction:column;gap:14px;}
+.brief-row{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--text);}
+.bdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.bdot-green{background:var(--green);box-shadow:0 0 8px rgba(62,207,142,0.5);}
+.bdot-gold{background:var(--gold);box-shadow:0 0 8px rgba(245,197,24,0.5);}
+.bdot-blue{background:var(--blue);box-shadow:0 0 8px rgba(96,165,250,0.5);}
+.brief-time{margin-top:20px;font-size:11px;color:var(--text-faint);letter-spacing:0.06em;}
+.brief-actions{display:flex;gap:8px;margin-top:16px;}
+.baction{flex:1;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:8px;padding:10px;text-align:center;font-size:12px;font-weight:700;color:var(--gold);cursor:pointer;transition:background 0.2s;}
+.baction:hover{background:rgba(245,197,24,0.2);}
+.baction-ghost{background:var(--surface2);border-color:var(--border);color:var(--text-muted);}
+
+/* SECTIONS */
+section{padding:96px 32px;}
+.section-inner{max-width:1160px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.section-h{font-family:'Fraunces',serif;font-size:clamp(28px,4vw,46px);font-weight:900;line-height:1.1;letter-spacing:-0.025em;margin-bottom:16px;}
+.section-h span{color:var(--gold);}
+.section-sub{font-size:17px;color:var(--text-muted);max-width:560px;line-height:1.65;}
+
+/* PRODUCTS GRID */
+.products{background:var(--surface);}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.product-card{background:var(--surface2);padding:48px;position:relative;overflow:hidden;transition:background 0.2s;}
+.product-card:hover{background:var(--surface3);}
+.product-card-accent{position:absolute;top:0;left:0;right:0;height:3px;}
+.product-icon{font-size:36px;margin-bottom:20px;}
+.product-tag{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.product-name{font-family:'Fraunces',serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:12px;color:var(--text);}
+.product-desc{font-size:15px;color:var(--text-muted);line-height:1.65;margin-bottom:28px;}
+.product-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--gold);background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:8px;padding:10px 20px;transition:all 0.2s;}
+.product-link:hover{background:rgba(245,197,24,0.2);}
+
+/* HOW IT WORKS */
+.how{background:var(--black);}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:56px;}
+.step{background:var(--surface);padding:40px;}
+.step-num{width:44px;height:44px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--gold);margin-bottom:20px;}
+.step-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.step-body{font-size:14px;color:var(--text-muted);line-height:1.65;}
+
+/* DECKBRIEF SECTION */
+.deckbrief-section{background:var(--surface);}
+.deckbrief-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px;}
+.db-features{display:flex;flex-direction:column;gap:16px;}
+.db-feature{display:flex;gap:14px;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color 0.2s;}
+.db-feature:hover{border-color:var(--border-gold);}
+.db-icon{width:44px;height:44px;background:var(--gold-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.db-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.db-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
+
+/* STUDIO SECTION */
+.studio-section{background:var(--black);}
+.studio-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px;}
+.studio-visual{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;overflow:hidden;}
+.studio-tabs{display:flex;gap:8px;margin-bottom:24px;}
+.stab{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);}
+.stab.active{background:var(--gold-dim);color:var(--gold);border-color:var(--border-gold);}
+.studio-output{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;}
+.studio-output-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.studio-output-text{font-size:13px;color:var(--text-muted);line-height:1.7;}
+.studio-output-text strong{color:var(--text);}
+.studio-features-list{display:flex;flex-direction:column;gap:12px;margin-top:0;}
+.sf{display:flex;align-items:flex-start;gap:12px;}
+.sf-check{width:20px;height:20px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.sf-text{font-size:14px;color:var(--text-muted);}
+.sf-text strong{color:var(--text);}
+
+/* LEAD FORM */
+.lead-section{background:var(--surface2);}
+.lead-inner{max-width:640px;margin:0 auto;text-align:center;}
+.lead-inner .section-h{margin-bottom:12px;}
+.lead-inner .section-sub{margin:0 auto 40px;}
+.lead-form{display:flex;flex-direction:column;gap:14px;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-field label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:6px;letter-spacing:0.04em;}
+.form-field input,.form-field select,.form-field textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--border-gold);}
+.form-field select option{background:var(--surface);}
+.form-field textarea{resize:vertical;min-height:100px;}
+.form-submit{background:var(--gold);color:#000;border:none;padding:15px 32px;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;width:100%;transition:background 0.2s;font-family:'Inter',sans-serif;}
+.form-submit:hover{background:var(--gold-dark);}
+.form-note{font-size:12px;color:var(--text-faint);text-align:center;margin-top:4px;}
+.form-success{display:none;text-align:center;padding:40px;background:var(--gold-dim);border:1px solid var(--border-gold);border-radius:16px;}
+.form-success h3{font-size:20px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.form-success p{font-size:14px;color:var(--text-muted);}
+
+/* FOOTER */
+footer{background:var(--black);border-top:1px solid var(--border);padding:48px 32px;}
+.footer-inner{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer-brand{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--text);}
+.footer-brand span{color:var(--gold);}
+.footer-tagline{font-size:13px;color:var(--text-faint);margin-top:4px;}
+.footer-links{display:flex;gap:28px;flex-wrap:wrap;}
+.footer-links a{font-size:13px;color:var(--text-muted);transition:color 0.2s;}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:12px;color:var(--text-faint);width:100%;margin-top:8px;}
+
+@media(max-width:900px){
+  .hero-inner,.deckbrief-layout,.studio-layout{grid-template-columns:1fr;gap:48px;}
+  .products-grid,.steps{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .hero h1{font-size:clamp(32px,7vw,48px);}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="NerdCommand" style="height:40px;width:40px;border-radius:8px;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="logo-badge" style="display:none;">NC</div>
+      <div class="logo-text">Nerd<span>Command</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#how">How It Works</a>
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="studio.html">Studio</a>
+    </div>
+    <a href="#lead" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">⚡ GangsterNerds LLC</div>
+      <h1>The <span>AI Command Center</span><br>Built Different.</h1>
+      <p class="hero-lede">Capture every lead. Draft every follow-up. Run an AI studio. Get your daily brief. One platform — built for creators and business owners who don't have time to babysit software.</p>
+      <div class="hero-btns">
+        <a href="#lead" class="btn-gold">Get Early Access — Free</a>
+        <a href="#products" class="btn-outline">See What We Build</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-item">
+          <span class="proof-num">7 AM</span>
+          <span class="proof-label">Daily brief in your inbox</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">0ms</span>
+          <span class="proof-label">Missed leads</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-num">36M+</span>
+          <span class="proof-label">U.S. SMBs we're built for</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="brief-card">
+      <div class="brief-label">Morning Brief — Today</div>
+      <div class="brief-rows">
+        <div class="brief-row">
+          <div class="bdot bdot-green"></div>
+          <span><strong>3 new leads</strong> captured from your site — 2 follow-ups drafted</span>
+        </div>
+        <div class="brief-row">
+          <div class="bdot bdot-gold"></div>
+          <span><strong>$42,500</strong> open pipeline — 1 deal stale &gt;5 days ⚠️</span>
+        </div>
+        <div class="brief-row">
+          <div class="bdot bdot-blue"></div>
+          <span><strong>2 Studio exports</strong> ready — Reel + LinkedIn post queued</span>
+        </div>
+        <div class="brief-row">
+          <div class="bdot bdot-green"></div>
+          <span><strong>Site uptime 100%</strong> — Contact form healthy ✓</span>
+        </div>
+      </div>
+      <div class="brief-time">Arrives 7:00 AM · Your timezone · Every day</div>
+      <div class="brief-actions">
+        <div class="baction">✓ Approve Follow-Ups</div>
+        <div class="baction baction-ghost">View Pipeline</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="section-inner">
+    <div class="eyebrow">What we build</div>
+    <h2 class="section-h">Two Products. <span>One Command Center.</span></h2>
+    <p class="section-sub">NerdCommand runs two focused products built to solve real problems for small business owners and creators.</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-card-accent" style="background:var(--gold);"></div>
+        <div class="product-icon">🤖</div>
+        <div class="product-tag">Business Command Agent</div>
+        <div class="product-name">DeckBrief</div>
+        <div class="product-desc">AI captures your leads, drafts the follow-ups, tracks every deal, and sends you a crystal-clear morning brief — every single day. No dashboard to check. No lead left behind.</div>
+        <a href="deckbrief.html" class="product-link">See DeckBrief →</a>
+      </div>
+      <div class="product-card">
+        <div class="product-card-accent" style="background:var(--blue);"></div>
+        <div class="product-icon">🎬</div>
+        <div class="product-tag">AI Creative Suite</div>
+        <div class="product-name">NerdCommand Studio</div>
+        <div class="product-desc">Autonomous AI movie production. Write scripts, generate images, render videos, and assemble full cinematic cuts — all from one command. Built for the creator who refuses to be limited by tools.</div>
+        <a href="studio.html" class="product-link">See Studio →</a>
+      </div>
+      <div class="product-card" style="grid-column:span 2;background:linear-gradient(135deg,var(--surface2) 0%,rgba(167,139,250,0.06) 100%);border-color:rgba(167,139,250,0.25);">
+        <div class="product-card-accent" style="background:linear-gradient(90deg,#A78BFA,#60A5FA,#F5C518);"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+          <div>
+            <div class="product-icon">⚡</div>
+            <div class="product-tag" style="color:#A78BFA;">5,000+ AI Tools · $14.99/mo</div>
+            <div class="product-name">NERDCOMMAND.AI</div>
+            <div class="product-desc">Every AI you need in one platform. Cinematic video with Seedance 2.0, voice agents, OmniReels marketing factory, AI chat with 50+ models, audio studio, podcasts, and more. 500,000+ creators already inside.</div>
+            <a href="funnel/nerdcommand-ai/" class="product-link" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.3);color:#A78BFA;">See the Full Platform →</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:13px;color:var(--text-muted);">🎬 Cinematic Video</span>
+              <span style="font-size:11px;font-weight:700;color:#A78BFA;background:rgba(167,139,250,0.1);padding:3px 10px;border-radius:6px;">Seedance 2.0</span>
+            </div>
+            <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:13px;color:var(--text-muted);">🤖 AI Chat</span>
+              <span style="font-size:11px;font-weight:700;color:var(--gold);background:var(--gold-dim);padding:3px 10px;border-radius:6px;">50+ Models</span>
+            </div>
+            <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:13px;color:var(--text-muted);">🎙️ Voice Agents</span>
+              <span style="font-size:11px;font-weight:700;color:var(--green);background:rgba(62,207,142,0.1);padding:3px 10px;border-radius:6px;">Real-Time</span>
+            </div>
+            <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:12px;padding:14px 18px;text-align:center;">
+              <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#A78BFA;">$14.99</span><span style="font-size:13px;color:var(--text-faint);">/month · everything included</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-h">Three Steps to <span>Full AI Command</span></h2>
+    <p class="section-sub">Set it up once. NerdCommand handles the rest while you focus on the work that actually moves the needle.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Connect your business</div>
+        <div class="step-body">Add one snippet to your site, connect your email, and tell us about your business. Takes 10 minutes. No engineers required.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Agent takes command</div>
+        <div class="step-body">Your NerdCommand agent captures every lead, enriches their profile, drafts a personalized follow-up, and updates your pipeline — automatically.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Brief arrives at 7 AM</div>
+        <div class="step-body">Every morning your brief lands in your inbox. New leads, deal statuses, actions needed — in plain English. No dashboards. No notifications. Just clarity.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECKBRIEF SECTION -->
+<section class="deckbrief-section" id="deckbrief">
+  <div class="section-inner">
+    <div class="eyebrow">DeckBrief — Business Command Agent</div>
+    <h2 class="section-h">Your Business, <span>Briefed Daily.</span></h2>
+    <p class="section-sub">Most small business owners lose more leads to slow follow-up than they ever lose to competition. DeckBrief closes that gap.</p>
+    <div class="deckbrief-layout">
+      <div class="db-features">
+        <div class="db-feature">
+          <div class="db-icon">🎯</div>
+          <div>
+            <div class="db-title">Lead Capture &amp; Enrichment</div>
+            <div class="db-desc">Every website visitor who takes action gets captured, enriched with company data, and qualified — automatically. Zero manual data entry.</div>
+          </div>
+        </div>
+        <div class="db-feature">
+          <div class="db-icon">✍️</div>
+          <div>
+            <div class="db-title">AI Follow-Up Drafts</div>
+            <div class="db-desc">AI drafts a personalized, human-sounding reply to every new lead within minutes. You review, hit send, and move on.</div>
+          </div>
+        </div>
+        <div class="db-feature">
+          <div class="db-icon">📊</div>
+          <div>
+            <div class="db-title">Deal Pipeline Tracking</div>
+            <div class="db-desc">Every opportunity moves through your pipeline automatically. Stale deals get flagged before they die. No CRM to babysit.</div>
+          </div>
+        </div>
+        <div class="db-feature">
+          <div class="db-icon">📋</div>
+          <div>
+            <div class="db-title">7 AM Daily Brief</div>
+            <div class="db-desc">A plain-English briefing lands in your inbox every morning. Leads, deals, actions — no dashboard required.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="brief-card" style="background:var(--surface2);">
+          <div class="brief-label">58% stat you need to know</div>
+          <div style="font-family:'Fraunces',serif;font-size:64px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:12px;">58%</div>
+          <div style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">of U.S. small businesses used generative AI in 2025. Up from 23% in 2023. The ones who moved fast are the ones winning.</div>
+          <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px;">THE GAP THAT KILLS DEALS</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.65;">Businesses who respond to a new lead within <strong style="color:var(--text);">5 minutes</strong> are <strong style="color:var(--text);">100× more likely to convert</strong>. The average small business response time? <strong style="color:var(--gold);">47 hours.</strong></div>
+          </div>
+          <a href="deckbrief.html" class="btn-gold" style="display:block;text-align:center;">Get DeckBrief — Close the Gap →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO SECTION -->
+<section class="studio-section" id="studio">
+  <div class="section-inner">
+    <div class="eyebrow">NerdCommand Studio — AI Creative Suite</div>
+    <h2 class="section-h">Make Movies. <span>Build Worlds.</span><br>Ship Content.</h2>
+    <p class="section-sub">Autonomous AI production pipeline. From script to screen — images, video, music, voice, and final cut — all from one command.</p>
+    <div class="studio-layout">
+      <div class="studio-features-list">
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Script to Screen Pipeline</strong> — Write a script, Studio renders the full cinematic sequence automatically</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Multi-Model AI</strong> — Claude, Wan2.2, ComfyUI, CogView integrated in one orchestrated workflow</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Character Consistency Engine</strong> — Your characters look the same in every shot, every scene</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Cinematic Grade Presets</strong> — CINEMATIC, NOIR, FLASHBACK, WARM, COOL — one flag, full color grade</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Trailer &amp; Feature Cuts</strong> — Auto-assembled from shots with sync-to-beat audio and title cards</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>Social Content Engine</strong> — Reels, TikToks, and LinkedIn posts cut from your studio output automatically</div></div>
+        <div class="sf"><div class="sf-check">✓</div><div class="sf-text"><strong>NerdCommand Universes</strong> — Exodus Horizon Legacy, Blood Relic, Hero's Open Source and more</div></div>
+      </div>
+      <div class="studio-visual">
+        <div class="studio-tabs">
+          <div class="stab active">Script</div>
+          <div class="stab">Render</div>
+          <div class="stab">Export</div>
+        </div>
+        <div style="background:var(--surface3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">▶ NCI Studio — Scene Assembly</div>
+          <div style="font-size:12px;color:#3ECF8E;font-family:monospace;line-height:1.8;">&gt; Parsing shot bible... 12 scenes detected<br>&gt; Generating scene_001.mp4 [CINEMATIC grade]<br>&gt; Rendering title card — Exodus Horizon Legacy<br>&gt; Audio sync: orbital_theme_v2.mp3<br>&gt; Encoding final cut at 1280×720...<br><span style="color:var(--gold);">&gt; ✓ exodus_horizon_trailer_v3.mp4 — DONE</span></div>
+        </div>
+        <a href="studio.html" class="btn-gold" style="display:block;text-align:center;">Explore NerdCommand Studio →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD FORM -->
+<section class="lead-section" id="lead">
+  <div class="section-inner">
+    <div class="lead-inner">
+      <div class="eyebrow" style="text-align:center;">Get Early Access</div>
+      <h2 class="section-h">Command Your Business.<br><span>Start Free.</span></h2>
+      <p class="section-sub">Tell us about your business and we'll set up your NerdCommand agent — DeckBrief, Studio, or both. Early access members get first priority and locked-in pricing.</p>
+
+      <form class="lead-form" id="leadForm"
+            action="https://formspree.io/f/xpwzogwn"
+            method="POST">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="first_name" placeholder="Michael" required>
+          </div>
+          <div class="form-field">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="last_name" placeholder="Chapman" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@yourbusiness.com" required>
+        </div>
+        <div class="form-field">
+          <label for="biz">Business Name</label>
+          <input type="text" id="biz" name="business_name" placeholder="Your Business">
+        </div>
+        <div class="form-field">
+          <label for="interest">What are you most interested in?</label>
+          <select id="interest" name="interest">
+            <option value="">Select one...</option>
+            <option value="deckbrief">DeckBrief — Lead capture &amp; daily brief</option>
+            <option value="studio">NerdCommand Studio — AI creative suite</option>
+            <option value="both">Both — I want the full command center</option>
+            <option value="custom">Custom AI build for my business</option>
+          </select>
+        </div>
+        <input type="hidden" name="_subject" value="New NerdCommand Lead">
+        <input type="hidden" name="_next" value="https://chapmancapital1.github.io/nerdcommand-site/?thanks=1">
+        <button type="submit" class="form-submit">Get Early Access — It's Free</button>
+        <p class="form-note">No credit card. No spam. We'll reach out within 24 hours.</p>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <h3>⚡ You're in the command center.</h3>
+        <p>We'll be in touch within 24 hours to get your NerdCommand agent set up. Check your inbox — including spam just in case.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Nerd<span>Command</span></div>
+      <div class="footer-tagline">AI Command Center — Built by GangsterNerds LLC</div>
+    </div>
+    <div class="footer-links">
+      <a href="deckbrief.html">DeckBrief</a>
+      <a href="studio.html">Studio</a>
+      <a href="#lead">Get Access</a>
+      <a href="mailto:hello@nerdcommand.info">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 GangsterNerds LLC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+// Form AJAX submit
+const form = document.getElementById('leadForm');
+const success = document.getElementById('formSuccess');
+if(form){
+  form.addEventListener('submit', async(e)=>{
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try{
+      const res = await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+      if(res.ok){
+        form.style.display='none';
+        success.style.display='block';
+      } else {
+        btn.textContent = 'Try Again';
+        btn.disabled = false;
+      }
+    }catch(err){
+      btn.textContent = 'Try Again';
+      btn.disabled = false;
+    }
+  });
+}
+
+// Show success if redirected back with ?thanks=1
+if(window.location.search.includes('thanks=1')){
+  if(form) form.style.display='none';
+  if(success) success.style.display='block';
+}
+
+// Studio tabs (cosmetic)
+document.querySelectorAll('.stab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#080a0f" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="/assets/css/nerdcommand.css" />
+
+  <title>Company overview · NerdCommand OS</title>
+  <meta name="description" content="NerdCommand OS UX prototype." />
+</head>
+<body class="os-body">
+  <div class="os-shell">
+    <aside class="os-sidebar" data-os-sidebar>
+      <div class="os-sidebar-head"><a class="brand" href="/index.html"><span class="brand-mark">N</span><span class="brand-word">Nerd<span>Command</span></span></a></div>
+      <button class="workspace-switcher" type="button"><span class="workspace-avatar">NC</span><div><strong>NerdCommand</strong><small>Company workspace</small></div></button>
+      <nav class="os-nav" data-os-nav aria-label="NerdCommand OS"></nav>
+      <div class="os-sidebar-foot"><strong>Foundry alpha</strong><p>Platform v0.1.0-alpha.1<br />Synthetic UX data</p><a class="button button-small" href="/index.html">Public website</a></div>
+    </aside>
+
+    <div class="os-main">
+      <header class="os-topbar">
+        <button class="os-mobile-menu" type="button" data-os-mobile-menu aria-label="Open navigation">☰</button>
+        <button class="os-search" type="button" data-open-palette><span aria-hidden="true">⌕</span><span>Search Commands, people, clients, docs...</span><kbd>⌘ K</kbd></button>
+        <div class="os-top-actions">
+          <div class="ai-node-status" data-ai-status><span class="status-dot"></span><span>AI · Checking</span></div>
+          <button class="icon-button" type="button" aria-label="Notifications">◌</button>
+          <button class="button button-primary button-small" type="button" data-create-command><span>+ Create Command</span><span aria-hidden="true">+</span></button>
+          <div class="user-chip" aria-label="User account">BM</div>
+        </div>
+      </header>
+      <main class="os-content" data-os-content></main>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" data-command-modal aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="create-command-title">
+      <header class="modal-head"><h2 id="create-command-title">Create Command</h2><button class="icon-button" type="button" data-close-modal aria-label="Close">×</button></header>
+      <form data-command-form>
+        <div class="modal-body form-grid">
+          <label class="field span-2"><span>Required outcome</span><input name="title" required placeholder="What must be true when this Command is complete?" /></label>
+          <label class="field"><span>Owner</span><select name="owner"><option>Boss Man</option><option>Platform Lead</option><option>Product Owner</option><option>Security Owner</option></select></label>
+          <label class="field"><span>Priority</span><select name="priority"><option>Normal</option><option>High</option><option>Critical</option><option>Low</option></select></label>
+          <label class="field"><span>Due date</span><input name="due" type="date" /></label>
+          <label class="field"><span>Approval</span><select name="approval"><option>Not required</option><option>Manager approval</option><option>Executive approval</option><option>Security approval</option></select></label>
+          <label class="field span-2"><span>Evidence required</span><textarea name="evidence" placeholder="Describe the proof required to complete the Command."></textarea></label>
+        </div>
+        <div class="modal-actions"><button class="button" type="button" data-close-modal>Cancel</button><button class="button button-primary" type="submit">Create prototype Command</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop command-palette" data-command-palette aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="palette-title">
+      <h2 class="sr-only" id="palette-title">Command palette</h2>
+      <div class="modal-body"><input class="palette-input" data-palette-input placeholder="Search pages and actions..." /><div class="palette-results" data-palette-results></div></div>
+    </section>
+  </div>
+
+  <div class="toast-region" data-toast-region aria-live="polite"></div>
+  <script type="module" src="/assets/js/os-app.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+{
+  "version": "0.1.0-alpha.1",
+  "updated": "2026-07-28",
+  "source": "Aligned to UX Prototype assets/js/product-registry.js + Build Plan v1.1.0",
+  "lifecycle": [
+    "proposed",
+    "planned",
+    "internal-alpha",
+    "private-beta",
+    "public-beta",
+    "general-availability",
+    "deprecated",
+    "retired"
+  ],
+  "public_advertise_statuses": [
+    "public-beta",
+    "general-availability",
+    "deprecated"
+  ],
+  "product_families": [
+    {
+      "slug": "nerdcommand-os",
+      "name": "NerdCommand OS",
+      "status": "internal-alpha",
+      "summary": "The governed command plane for running a company.",
+      "version": "0.1.0-alpha.1"
+    },
+    {
+      "slug": "foundry",
+      "name": "NerdCommand Foundry",
+      "status": "planned",
+      "summary": "Manufacturing system for source-included business operating systems.",
+      "version": "0.0.1"
+    },
+    {
+      "slug": "deckbrief",
+      "name": "Deckbrief",
+      "status": "private-beta",
+      "summary": "Evidence-backed operating, board, investor, and customer briefings; sales-ops CRM + morning brief MVP live in deckbrief-api.",
+      "version": "1.0.0-local-mvp",
+      "surfaces": [
+        "deckbrief.html",
+        "ceo.html",
+        "deckbrief-api",
+        "app/#briefs"
+      ]
+    },
+    {
+      "slug": "local-service-os",
+      "name": "Local Service Company OS",
+      "status": "planned",
+      "summary": "Reusable operating core for job-based local service companies.",
+      "version": "0.0.1"
+    }
+  ],
+  "features": [
+    {
+      "slug": "public-command-site",
+      "name": "Registry-driven public website",
+      "family": "nerdcommand-os",
+      "status": "public-beta",
+      "public": true,
+      "summary": "NerdCommand.com from versioned product truth."
+    },
+    {
+      "slug": "command-center-ux",
+      "name": "Command Center UX",
+      "family": "nerdcommand-os",
+      "status": "public-beta",
+      "public": true,
+      "summary": "15-view OS shell (UX prototype)."
+    },
+    {
+      "slug": "commands",
+      "name": "Governed Commands",
+      "family": "nerdcommand-os",
+      "status": "planned",
+      "public": true,
+      "summary": "Owned work with policies, approvals, evidence, outcomes."
+    },
+    {
+      "slug": "local-ai-runtime",
+      "name": "Local AI Runtime",
+      "family": "nerdcommand-os",
+      "status": "private-beta",
+      "public": true,
+      "summary": "LM Studio / Ollama via local node; production = outbound signed jobs."
+    },
+    {
+      "slug": "command-briefs",
+      "name": "Command Briefs",
+      "family": "deckbrief",
+      "status": "private-beta",
+      "public": true,
+      "summary": "Briefings from operational data; MVP = lead pipeline daily brief."
+    },
+    {
+      "slug": "deckbrief-lead-crm",
+      "name": "DeckBrief Lead CRM",
+      "family": "deckbrief",
+      "status": "private-beta",
+      "public": false,
+      "summary": "Multi-tenant leads, pipeline, CEO dashboard, webhooks, funnels (deckbrief-api)."
+    },
+    {
+      "slug": "business-genome",
+      "name": "Business Genome",
+      "family": "foundry",
+      "status": "planned",
+      "public": true
+    },
+    {
+      "slug": "cleaning-os",
+      "name": "Residential Cleaning Company OS",
+      "family": "local-service-os",
+      "status": "planned",
+      "public": true
+    }
+  ]
+}

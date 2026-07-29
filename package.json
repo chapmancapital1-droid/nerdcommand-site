@@ -1,0 +1,19 @@
+{
+  "name": "nerdcommand-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "NerdCommand.com + Command Center UX (Stage 1) with DeckBrief API backend.",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "check": "node scripts/check-project.mjs",
+    "ai:local": "node connector/local-ai-node.mjs",
+    "ai:worker": "node connector/outbound-worker.mjs",
+    "deckbrief:dev": "npm --prefix deckbrief-api run dev",
+    "deckbrief:smoke": "npm --prefix deckbrief-api run smoke",
+    "deckbrief:verify": "npm --prefix deckbrief-api run verify"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

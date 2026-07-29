@@ -7,6 +7,8 @@ deckbrief-api/node_modules/
 
 # Local env files
 deckbrief-api/.env
+.env
+.env.local
 
 # OS / editor cruft
 Thumbs.db
@@ -14,3 +16,6 @@ desktop.ini
 .DS_Store
 *.swp
 *~
+
+# Unpacked prototype (source zip kept at repo root; live files are in root app/assets/etc)
+docs/nexus/ux-prototype-extract/

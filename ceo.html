@@ -166,9 +166,22 @@ tr:hover td{background:rgba(245,166,35,0.04)}
   </div>
 </div>
 
+<script src="js/deckbrief-config.js"></script>
 <script>
-const API = 'https://deckbrief-api.up.railway.app';
+let API = 'https://deckbrief-api.up.railway.app';
 let KEY = '';
+
+window.DeckBriefConfig.getApiBase().then(base => {
+  API = base;
+  const saved = sessionStorage.getItem('dbkey');
+  if (saved) {
+    KEY = saved;
+    document.getElementById('auth-wall').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('csvLink').href = `${API}/api/ceo/export/leads.csv`;
+    loadDashboard();
+  }
+});
 
 function unlock() {
   KEY = document.getElementById('apiKey').value.trim();
@@ -185,9 +198,6 @@ function unlock() {
 }
 
 document.getElementById('apiKey').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
-
-const saved = sessionStorage.getItem('dbkey');
-if (saved) { KEY = saved; document.getElementById('auth-wall').style.display = 'none'; document.getElementById('app').style.display = 'block'; document.getElementById('csvLink').href = `${API}/api/ceo/export/leads.csv`; loadDashboard(); }
 
 async function api(path) {
   const r = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${KEY}` } });

@@ -146,9 +146,16 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold)}
   </div>
 </div>
 
+<script src="js/deckbrief-config.js"></script>
 <script>
-const API = 'https://deckbrief-api.up.railway.app';
+let API = 'https://deckbrief-api.up.railway.app';
 let KEY='', funnels=[], cur=null, curStep=0, selBlock=null, dirty=false;
+
+window.DeckBriefConfig.getApiBase().then(base => {
+  API = base;
+  const saved = sessionStorage.getItem('dbfkey');
+  if (saved) { document.getElementById('key').value = saved; unlock(); }
+});
 
 function h(){ return {Authorization:`Bearer ${KEY}`,'Content-Type':'application/json'}; }
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
@@ -165,8 +172,6 @@ async function unlock(){
   }catch(e){ document.getElementById('autherr').style.display='block'; }
 }
 document.getElementById('key').addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
-const saved = sessionStorage.getItem('dbfkey');
-if(saved){ document.getElementById('key').value=saved; unlock(); }
 
 function renderList(){
   const el = document.getElementById('funnelList');

@@ -1,0 +1,43 @@
+name: NerdCommand UX CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ux-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate project structure
+        run: npm run check
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check assets/js/product-registry.js
+          node --check assets/js/site.js
+          node --check assets/js/os-data.js
+          node --check assets/js/os-app.js
+          node --check api/ai/health.js
+          node --check api/ai/chat.js
+          node --check connector/local-ai-node.mjs
+          node --check connector/outbound-worker.mjs
+          node --check scripts/dev-server.mjs

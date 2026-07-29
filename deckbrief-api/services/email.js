@@ -2,13 +2,28 @@ const { Resend } = require('resend');
 
 let _resend = null;
 function getResend() {
-  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY || 'placeholder');
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY not configured');
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY);
+  }
   return _resend;
 }
-const FROM = 'DeckBrief <noreply@nerdcommand.info>';
+
+function hasEmail() {
+  return Boolean(process.env.RESEND_API_KEY);
+}
+
+const FROM = process.env.EMAIL_FROM || 'DeckBrief <noreply@nerdcommand.info>';
 const OWNER = process.env.BRIEF_RECIPIENT_EMAIL || 'chapmancapital1@gmail.com';
 
 async function sendDraftNotification(lead, draft, recipient) {
+  if (!hasEmail()) {
+    console.warn('[email] RESEND_API_KEY missing — skip draft notification for', lead.email);
+    return { skipped: true };
+  }
+
   const to = recipient || OWNER;
   const lines = draft.split('\n');
   const subjectLine = lines.find(l => l.startsWith('Subject:')) || 'Subject: New Lead Follow-Up';
@@ -34,7 +49,7 @@ async function sendDraftNotification(lead, draft, recipient) {
     </table>
   </div>
   <div style="background:#fff;padding:20px;border:1px solid #e0e0e0;border-top:none;">
-    <p style="font-size:13px;color:#888;margin:0 0 8px;">CLAUDE-DRAFTED FOLLOW-UP — review and send</p>
+    <p style="font-size:13px;color:#888;margin:0 0 8px;">FOLLOW-UP DRAFT — review and send</p>
     <p style="font-size:13px;color:#666;margin:0 0 4px;"><strong>Subject:</strong> ${subject}</p>
     <hr style="border:none;border-top:1px solid #eee;margin:12px 0;">
     <div style="font-size:14px;line-height:1.7;white-space:pre-wrap;">${body}</div>
@@ -44,9 +59,15 @@ async function sendDraftNotification(lead, draft, recipient) {
   </div>
 </div>`,
   });
+  return { sent: true, to };
 }
 
 async function sendDailyBrief(briefHtml, briefText, date, recipient) {
+  if (!hasEmail()) {
+    console.warn('[email] RESEND_API_KEY missing — skip daily brief email');
+    return { skipped: true };
+  }
+
   const to = recipient || OWNER;
   const dateStr = new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
   await getResend().emails.send({
@@ -65,6 +86,7 @@ async function sendDailyBrief(briefHtml, briefText, date, recipient) {
 </div>`,
     text: `DeckBrief — ${dateStr}\n\n${briefText}`,
   });
+  return { sent: true, to };
 }
 
-module.exports = { sendDraftNotification, sendDailyBrief };
+module.exports = { sendDraftNotification, sendDailyBrief, hasEmail };

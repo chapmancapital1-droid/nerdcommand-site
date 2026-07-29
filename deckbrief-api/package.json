@@ -7,7 +7,13 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "migrate": "node db/migrate.js",
-    "verify": "node test/verify-schema.js"
+    "seed:dev": "node scripts/seed-dev.js",
+    "brief": "node jobs/daily-brief.js",
+    "brief:dry": "node -e \"process.env.DRY_RUN='1';require('./jobs/daily-brief.js')\"",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "verify": "node test/verify-schema.js",
+    "smoke": "node scripts/smoke.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",

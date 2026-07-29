@@ -1,21 +1,22 @@
-# CLAUDE.md — NerdCommand.info Site
+# CLAUDE.md — NerdCommand.com / Business OS Site
 
-Single source of truth for maintaining the **NerdCommand.info** website with Claude Code.
-Claude reads this automatically when the project opens.
+Single source of truth for maintaining the **NerdCommand** site + OS UX with agents.
+Also read **`AGENTS.md`** and **`docs/nexus/06-source-documents-read.md`**.
 
 ## Identity
 | Field | Value |
 |---|---|
-| Site | NerdCommand.info |
+| Site | nerdcommand.com (primary) |
 | Organization | GangsterNerds LLC |
-| GitHub repo | https://github.com/chapmancapital1/nerdcommand-site |
-| Owner | chapmancapital1 |
+| GitHub repo | https://github.com/chapmancapital1-droid/nerdcommand-site |
+| Owner | chapmancapital1-droid |
 | Default branch | main |
-| Live URL | https://chapmancapital1.github.io/nerdcommand-site/ |
-| Custom domain | nerdcommand.info — **not wired yet** (see bottom) |
-| Primary file | index.html (self-contained: HTML + CSS + vanilla JS, no build step) |
-| Config | site_config.json |
-| Monitor | site_manager.ps1 (PowerShell — this machine has no Python) |
+| Host | **Vercel** ← GitHub (ADR-0001); GH Pages legacy |
+| Custom domain | nerdcommand.com — DNS owned, wire after Vercel (ADR-0008) |
+| Primary UX | Stage 1 prototype: `index.html` + `app/` + `assets/` |
+| DeckBrief API | `deckbrief-api/` on Railway (ADR-0009) |
+| Config | `site_config.json`, `api-config.json`, `product-registry.json` |
+| Monitor | site_manager.ps1 (PowerShell — no Python required) |
 
 ## How this site deploys
 GitHub Pages, **Deploy from a branch** (`main` / root). Every push to `main` auto-publishes

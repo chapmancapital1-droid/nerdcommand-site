@@ -1,0 +1,25 @@
+# Local Postgres for DeckBrief development
+# Usage: docker compose up -d
+# DATABASE_URL=postgresql://deckbrief:deckbrief@localhost:5432/deckbrief
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: deckbrief-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: deckbrief
+      POSTGRES_PASSWORD: deckbrief
+      POSTGRES_DB: deckbrief
+    volumes:
+      - deckbrief_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U deckbrief -d deckbrief"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  deckbrief_pgdata:

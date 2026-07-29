@@ -21,19 +21,18 @@ router.post('/', resolveIntake, async (req, res) => {
 
     await events.insert(lead.id, 'status_change', null, 'new');
 
-    if (process.env.ANTHROPIC_API_KEY && process.env.RESEND_API_KEY) {
-      setImmediate(async () => {
-        try {
-          const draft = await generateFollowUpDraft(lead);
-          await leadQ.setDraft(lead.id, draft);
-          await events.insert(lead.id, 'draft_generated', null, 'generated');
-          const { rows: acctRows } = await accounts.getById(lead.account_id);
-          await sendDraftNotification(lead, draft, acctRows[0]?.email);
-        } catch (err) {
-          console.error('[leads] draft/notify error:', err.message);
-        }
-      });
-    }
+    // Always try draft (template fallback if no Anthropic). Email skips if no Resend.
+    setImmediate(async () => {
+      try {
+        const draft = await generateFollowUpDraft(lead);
+        await leadQ.setDraft(lead.id, draft);
+        await events.insert(lead.id, 'draft_generated', null, 'generated');
+        const { rows: acctRows } = await accounts.getById(lead.account_id);
+        await sendDraftNotification(lead, draft, acctRows[0]?.email);
+      } catch (err) {
+        console.error('[leads] draft/notify error:', err.message);
+      }
+    });
 
     res.json({ success: true, id: lead.id });
   } catch (err) {

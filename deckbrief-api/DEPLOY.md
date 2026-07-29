@@ -89,19 +89,23 @@ curl https://YOUR-RAILWAY-URL/api/leads \
 
 ## STEP 3 — Point the frontend at the live API (~5 min)
 
-Two files have a hardcoded placeholder URL `https://deckbrief-api.up.railway.app`.
-Replace with your real Railway URL:
+Static pages load the API URL from **`api-config.json`** at the repo root
+(via `js/deckbrief-config.js`). Update one field:
 
-1. `deckbrief.html` — find `const DECKBRIEF_API =`
-2. `ceo.html` — find `const API =`
+```json
+"api_base_url": "https://YOUR-REAL-RAILWAY-URL"
+```
+
+Optional per-page override while testing: `?api=https://YOUR-URL`
 
 Then commit + push:
 ```bash
-cd D:/nerdcommand-site
-git add deckbrief.html ceo.html
-git commit -m "chore: point frontend at live Railway API URL"
+git add api-config.json
+git commit -m "chore: point site at live Railway DeckBrief API"
 git push origin main
 ```
+
+Vercel/GitHub Pages will pick up the new config automatically.
 
 ---
 

@@ -1,0 +1,10 @@
+{
+  "product": "DeckBrief",
+  "version": "1.0.0",
+  "api_base_url": "https://deckbrief-api.up.railway.app",
+  "api_base_url_local": "http://127.0.0.1:3000",
+  "intake_key_default": "deckbrief-default",
+  "site_origin_prod": "https://nerdcommand.com",
+  "site_origin_preview_note": "Vercel preview origins are allowed via CORS regex on the API",
+  "notes": "Static pages load this file at runtime. Override with ?api=http://127.0.0.1:3000 on any page. After Railway deploy, set api_base_url to the real public URL and redeploy the site."
+}
